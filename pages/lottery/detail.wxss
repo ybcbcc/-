@@ -1,80 +1,155 @@
 /* pages/lottery/detail.wxss */
 .page-container {
   min-height: 100vh;
-  background-color: var(--page-bg);
-  padding: 40rpx;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background-color: #f7f8fa;
+  padding-bottom: 120rpx;
 }
 
-.info-card {
+.banner-image {
   width: 100%;
+  height: 400rpx;
+  background-color: #eee;
+}
+
+.banner-placeholder {
+  width: 100%;
+  height: 400rpx;
+  background-color: #ddd;
+}
+
+.content-wrapper {
+  padding: 30rpx;
+  margin-top: -40rpx; /* 向上重叠 */
+  position: relative;
+  z-index: 1;
+  background-color: transparent;
+}
+
+.header-section {
   background-color: #fff;
-  border-radius: 20rpx;
-  padding: 40rpx;
-  box-shadow: 0 4rpx 12rpx var(--shadow-color);
-  margin-bottom: 60rpx;
-  text-align: center;
+  padding: 30rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.05);
+  margin-bottom: 24rpx;
 }
 
 .title {
   font-size: 36rpx;
   font-weight: bold;
-  color: var(--text-main);
-  margin-bottom: 20rpx;
+  color: #333;
+  margin-bottom: 16rpx;
+  line-height: 1.4;
 }
 
-.desc {
+.status-tag {
+  display: inline-block;
+  padding: 6rpx 16rpx;
+  background-color: #eee;
+  color: #999;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+}
+
+.status-tag.active {
+  background-color: #e8f5e9;
+  color: #4caf50;
+}
+
+.desc-section {
+  background-color: #fff;
+  padding: 30rpx;
+  border-radius: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.desc-text {
   font-size: 28rpx;
-  color: var(--text-secondary);
+  color: #666;
+  line-height: 1.6;
 }
 
-.result-area {
-  width: 100%;
-  background-color: #ede7f6; /* 浅紫色背景 */
-  border-radius: 20rpx;
-  padding: 40rpx;
-  margin-bottom: 60rpx;
-  text-align: center;
-  border: 2rpx dashed var(--theme-color);
+.info-card {
+  background-color: #fff;
+  padding: 30rpx;
+  border-radius: 16rpx;
+  margin-bottom: 24rpx;
 }
 
-.result-title {
-  font-size: 32rpx;
-  color: var(--theme-color);
-  margin-bottom: 20rpx;
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 24rpx;
+  padding-left: 10rpx;
+  border-left: 6rpx solid var(--theme-color, #673ab7);
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.info-row:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.value {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.value.highlight {
+  color: #673ab7;
   font-weight: bold;
 }
 
-.result-content {
-  font-size: 40rpx;
-  color: #ff5722; /* 醒目的橙红色 */
-  font-weight: bold;
+.progress-section {
+  margin-top: 30rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #eee;
 }
 
-.action-area {
-  width: 100%;
-  /* margin-top: auto; 移除推到底部的样式 */
-  padding-bottom: 40rpx;
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10rpx;
+}
+
+.progress-text {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.footer-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  padding: 20rpx 30rpx;
+  box-shadow: 0 -2rpx 10rpx rgba(0,0,0,0.05);
+  z-index: 10;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
 }
 
 .draw-btn {
-  background-color: var(--theme-color);
+  background-color: var(--theme-color, #673ab7);
   color: #fff;
-  border-radius: 50rpx;
-  height: 100rpx;
-  /* line-height: 100rpx; 移除 line-height，改用 flex 居中 */
-  font-size: 36rpx;
+  border-radius: 44rpx;
+  font-size: 32rpx;
   font-weight: bold;
-  box-shadow: 0 8rpx 16rpx rgba(103, 58, 183, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 88rpx;
+  line-height: 88rpx;
 }
 
 .draw-btn.disabled {
-  background-color: #b39ddb;
-  box-shadow: none;
+  background-color: #ccc;
+  color: #fff;
 }

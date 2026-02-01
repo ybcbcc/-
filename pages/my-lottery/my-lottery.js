@@ -12,6 +12,7 @@ Page({
   fetchData() {
     request('/api/user/lottery-history')
       .then(res => {
+        // 后端返回的是 [{id, lotteryId, lotteryTitle, isWinner, prizeName, participatedAt}, ...]
         this.setData({
           lotteryList: res
         });
@@ -23,10 +24,10 @@ Page({
   },
 
   handleItemClick(e) {
-    console.log('点击了抽奖记录', e.detail.item);
-    wx.showToast({
-      title: '查看详情',
-      icon: 'none'
+    const item = e.detail.item || e.currentTarget.dataset.item;
+    // 跳转到详情
+    wx.navigateTo({
+        url: `/pages/lottery/detail?id=${item.lotteryId}`
     });
   }
 })

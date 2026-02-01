@@ -1,24 +1,67 @@
 <view class="page-container">
-  <!-- 活动信息 -->
-  <view class="info-card">
-    <view class="title">{{lotteryInfo.title}}</view>
-    <view class="desc">{{lotteryInfo.desc}}</view>
+  <!-- 顶部图片 -->
+  <image wx:if="{{lotteryInfo.imageUrl}}" src="{{lotteryInfo.imageUrl}}" mode="aspectFill" class="banner-image" />
+  <view wx:else class="banner-placeholder"></view>
+
+  <!-- 内容区域 -->
+  <view class="content-wrapper">
+    <!-- 标题与状态 -->
+    <view class="header-section">
+      <view class="title">{{lotteryInfo.title}}</view>
+      <view class="status-tag {{lotteryInfo.status === 'active' ? 'active' : ''}}">
+        {{lotteryInfo.status === 'active' ? '进行中' : '已结束'}}
+      </view>
+    </view>
+
+    <!-- 描述 -->
+    <view class="desc-section" wx:if="{{lotteryInfo.description}}">
+      <view class="section-title">活动描述</view>
+      <text class="desc-text">{{lotteryInfo.description}}</text>
+    </view>
+
+    <!-- 奖品信息 -->
+    <view class="info-card">
+      <view class="section-title">奖品详情</view>
+      <view class="info-row">
+        <text class="label">奖品名称</text>
+        <text class="value highlight">{{lotteryInfo.prizeName}}</text>
+      </view>
+      <view class="info-row">
+        <text class="label">奖品价值</text>
+        <text class="value">¥{{lotteryInfo.prizeValue}}</text>
+      </view>
+    </view>
+
+    <!-- 规则与进度 -->
+    <view class="info-card">
+      <view class="section-title">参与规则</view>
+      <view class="info-row">
+        <text class="label">消耗积分</text>
+        <text class="value">{{lotteryInfo.costPerEntry}} 积分</text>
+      </view>
+      <view class="info-row">
+        <text class="label">结束时间</text>
+        <text class="value">{{lotteryInfo.endTimeFormat}}</text>
+      </view>
+      
+      <!-- 参与进度 -->
+      <view class="progress-section">
+        <view class="progress-header">
+          <text class="label">参与人数</text>
+          <text class="progress-text">{{lotteryInfo.currentParticipants}} / {{lotteryInfo.maxParticipants}}</text>
+        </view>
+        <progress percent="{{(lotteryInfo.currentParticipants / lotteryInfo.maxParticipants) * 100}}" border-radius="10" stroke-width="6" activeColor="#673ab7" backgroundColor="#eee" />
+      </view>
+    </view>
   </view>
 
-  <!-- 结果展示区域 -->
-  <view class="result-area" wx:if="{{result}}">
-    <view class="result-title">抽奖结果</view>
-    <view class="result-content">{{result}}</view>
-  </view>
+  <!-- 底部占位，防止被按钮遮挡 -->
+  <view class="footer-placeholder"></view>
 
-  <!-- 抽奖操作区域 -->
-  <view class="action-area">
-    <button 
-      class="draw-btn {{isDrawing ? 'disabled' : ''}}" 
-      bindtap="handleDraw" 
-      disabled="{{isDrawing}}"
-    >
-      {{isDrawing ? '抽奖中...' : '立即抽奖'}}
+  <!-- 底部悬浮按钮 -->
+  <view class="footer-bar">
+    <button class="draw-btn {{lotteryInfo.status !== 'active' ? 'disabled' : ''}}" bindtap="handleDraw" disabled="{{lotteryInfo.status !== 'active'}}">
+      {{lotteryInfo.status === 'active' ? '立即抽奖' : '活动已结束'}}
     </button>
   </view>
 </view>

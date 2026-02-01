@@ -1,9 +1,9 @@
 /* components/lottery-card/lottery-card.wxss */
 .lottery-item {
-  background-color: var(--card-bg);
+  background-color: var(--card-bg, #fff);
   border-radius: 16rpx;
   overflow: hidden;
-  box-shadow: 0 4rpx 12rpx var(--shadow-color);
+  box-shadow: 0 4rpx 12rpx var(--shadow-color, rgba(0,0,0,0.1));
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -12,13 +12,18 @@
 .item-image {
   width: 100%;
   height: 240rpx;
-  background-color: var(--placeholder-light);
+  background-color: var(--placeholder-light, #f0f0f0);
 }
 
 .placeholder-img {
   width: 100%;
   height: 100%;
-  background-color: var(--placeholder-dark);
+  background-color: var(--placeholder-dark, #e0e0e0);
+}
+
+.real-image {
+  width: 100%;
+  height: 100%;
 }
 
 .item-content {
@@ -30,7 +35,7 @@
 .item-title {
   font-size: 28rpx;
   font-weight: bold;
-  color: var(--text-main);
+  color: var(--text-main, #333);
   margin-bottom: 12rpx;
   /* 限制两行显示 */
   display: -webkit-box;
@@ -42,8 +47,8 @@
 .item-status {
   align-self: flex-start;
   font-size: 22rpx;
-  color: var(--theme-color);
-  background-color: var(--tag-bg);
+  color: var(--theme-color, #673ab7);
+  background-color: var(--tag-bg, #eee);
   padding: 4rpx 12rpx;
   border-radius: 8rpx;
 }

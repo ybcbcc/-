@@ -1,7 +1,7 @@
 <view class="lottery-item" bindtap="onTap">
   <view class="item-image">
-    <!-- 这里可以是图片组件，暂时用纯色块代替 -->
-    <view class="placeholder-img"></view>
+    <image wx:if="{{item.imageUrl}}" src="{{item.imageUrl}}" mode="aspectFill" class="real-image" />
+    <view wx:else class="placeholder-img"></view>
   </view>
   <view class="item-content">
     <view class="item-title">{{item.title}}</view>

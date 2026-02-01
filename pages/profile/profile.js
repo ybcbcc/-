@@ -3,14 +3,15 @@ const { request } = require('../../utils/request.js');
 
 Page({
   data: {
-    isLoggedIn: false, // 登录状态
+    isLoggedIn: false,
     userInfo: {
-      avatarUrl: '', // 默认头像留空或使用默认图
+      avatarUrl: '',
       nickName: '点击登录',
-      points: 0
+      integral: 0, // Changed from points
+      memberType: 'free'
     },
     menuList: [
-      { id: 'points', title: '我的积分', icon: '' },
+      { id: 'integral', title: '我的积分', icon: '' },
       { id: 'lottery', title: '我的抽奖', icon: '' },
       { id: 'publish', title: '我的发布', icon: '' },
       { id: 'member', title: '我的会员', icon: '' },
@@ -31,8 +32,7 @@ Page({
       this.setData({ 
         isLoggedIn: false,
         'userInfo.nickName': '点击登录',
-        'userInfo.avatarUrl': '',
-        'userInfo.points': 0
+        'userInfo.integral': 0
       });
     }
   },
@@ -41,10 +41,10 @@ Page({
     request('/api/user/info')
       .then(res => {
         this.setData({
-          'userInfo.points': res.points || 0,
-          // 如果后端有昵称，显示后端昵称；否则显示默认
+          'userInfo.integral': res.integral || 0,
           'userInfo.nickName': res.nickname || '微信用户',
-          'userInfo.avatarUrl': res.avatarUrl || ''
+          'userInfo.avatarUrl': res.avatarUrl || '',
+          'userInfo.memberType': res.memberType
         });
       })
       .catch(err => {
@@ -56,21 +56,17 @@ Page({
       });
   },
 
-  // 用户点击头像登录/授权
   handleLogin() {
     if (this.data.isLoggedIn) {
-      // 已登录状态下，点击头像更新资料
       this.updateUserProfile();
     } else {
-      // 未登录，先执行登录
       wx.showLoading({ title: '登录中...' });
       app.login()
         .then(() => {
           wx.hideLoading();
           this.setData({ isLoggedIn: true });
-          this.fetchUserInfo(); // 获取初始信息
+          this.fetchUserInfo();
           
-          // 登录成功后，询问是否同步微信资料
           wx.showModal({
             title: '提示',
             content: '登录成功，是否同步微信头像和昵称？',
@@ -88,27 +84,23 @@ Page({
     }
   },
 
-  // 调用微信接口获取并更新资料
   updateUserProfile() {
     wx.getUserProfile({
       desc: '完善会员资料', 
       success: (res) => {
         const { avatarUrl, nickName } = res.userInfo;
         
-        // 1. 更新本地展示
         this.setData({
           'userInfo.avatarUrl': avatarUrl,
           'userInfo.nickName': nickName
         });
         
-        // 2. 同步到后端数据库
         request('/api/user/update', 'POST', {
           nickName: nickName,
           avatarUrl: avatarUrl
         }).then(res => {
           wx.showToast({ title: '资料已更新', icon: 'success' });
         }).catch(err => {
-          console.error('Update profile failed', err);
           wx.showToast({ title: '同步失败', icon: 'none' });
         });
       },
@@ -119,7 +111,6 @@ Page({
   },
 
   handleMenuClick(e) {
-    // 未登录拦截
     if (!this.data.isLoggedIn) {
       wx.showToast({ title: '请先登录', icon: 'none' });
       return;
@@ -127,13 +118,10 @@ Page({
 
     const item = e.currentTarget.dataset.item;
     
-    if (item.id === 'points') return;
+    if (item.id === 'integral') return; // Do nothing for now
 
     if (item.id === 'contact') {
-      wx.showToast({
-        title: '即将打开客服会话',
-        icon: 'none'
-      });
+      wx.showToast({ title: '即将打开客服会话', icon: 'none' });
     } else {
       const routes = {
         'lottery': '/pages/my-lottery/my-lottery',
@@ -144,11 +132,6 @@ Page({
       const url = routes[item.id];
       if (url) {
         wx.navigateTo({ url });
-      } else {
-        wx.showToast({
-          title: '功能开发中',
-          icon: 'none'
-        });
       }
     }
   }

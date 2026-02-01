@@ -3,111 +3,164 @@ const { request, uploadFile } = require('../../utils/request.js');
 
 Page({
   data: {
-    tempImage: '',
+    id: '', // 用于编辑模式
+    title: '',
+    imageUrl: '',
     description: '',
-    locationName: '',
-    locationAddress: ''
+    prizeName: '',
+    prizeValue: '',
+    costPerEntry: '',
+    maxParticipants: '',
+    winProbability: '',
+    
+    prizeTypes: ['integral', 'membership', 'avatar_frame', 'chat_bubble', 'theme', 'external_vip'],
+    prizeTypeIndex: 0,
+    
+    endDate: '2025-12-31',
+    endTime: '23:59'
   },
 
   onLoad(options) {
-
+    if (options.id) {
+      this.setData({ id: options.id });
+      wx.setNavigationBarTitle({ title: '修改活动' });
+      this.loadDetail(options.id);
+    } else {
+      // Set default date to tomorrow
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      this.setData({
+        endDate: tomorrow.toISOString().split('T')[0]
+      });
+    }
   },
 
-  // 选择图片
+  loadDetail(id) {
+    wx.showLoading({ title: '加载中' });
+    request(`/api/lottery/detail?id=${id}`)
+      .then(res => {
+        wx.hideLoading();
+        // Parse endTime
+        let endDate = '2025-12-31';
+        let endTime = '23:59';
+        if (res.endTime) {
+            const dt = new Date(res.endTime);
+            endDate = dt.toISOString().split('T')[0];
+            endTime = dt.toTimeString().substring(0, 5);
+        }
+        
+        // Find prize type index
+        const index = this.data.prizeTypes.indexOf(res.prizeType);
+        
+        this.setData({
+            title: res.title,
+            imageUrl: res.imageUrl,
+            description: res.description,
+            prizeName: res.prizeName,
+            prizeValue: res.prizeValue,
+            costPerEntry: res.costPerEntry,
+            maxParticipants: res.maxParticipants,
+            winProbability: res.winProbability,
+            endDate,
+            endTime,
+            prizeTypeIndex: index >= 0 ? index : 0
+        });
+      })
+      .catch(err => {
+        wx.hideLoading();
+        wx.showToast({ title: '加载失败', icon: 'none' });
+      });
+  },
+
+  handleInput(e) {
+    const field = e.currentTarget.dataset.field;
+    this.setData({
+      [field]: e.detail.value
+    });
+  },
+
+  bindPrizeTypeChange(e) {
+    this.setData({
+      prizeTypeIndex: e.detail.value
+    });
+  },
+
+  bindDateChange(e) {
+    this.setData({
+      endDate: e.detail.value
+    });
+  },
+
+  bindTimeChange(e) {
+    this.setData({
+      endTime: e.detail.value
+    });
+  },
+
   chooseImage() {
     wx.chooseImage({
       count: 1,
       sizeType: ['compressed'],
       sourceType: ['album', 'camera'],
       success: (res) => {
-        this.setData({
-          tempImage: res.tempFilePaths[0]
-        });
-      }
-    });
-  },
-
-  // 输入描述
-  handleInput(e) {
-    this.setData({
-      description: e.detail.value
-    });
-  },
-
-  // 选择定位
-  chooseLocation() {
-    wx.chooseLocation({
-      success: (res) => {
-        this.setData({
-          locationName: res.name,
-          locationAddress: res.address
-        });
-      },
-      fail: (err) => {
-        console.error('选择位置失败', err);
-        // 如果是权限问题，可以提示用户去设置页打开
-        if (err.errMsg.indexOf('auth') > -1) {
-          wx.showModal({
-            title: '提示',
-            content: '需要获取您的位置权限，请前往设置打开',
-            success: (res) => {
-              if (res.confirm) {
-                wx.openSetting();
-              }
-            }
+        const tempFilePath = res.tempFilePaths[0];
+        wx.showLoading({ title: '上传中...' });
+        
+        uploadFile(tempFilePath)
+          .then(fileID => {
+            wx.hideLoading();
+            this.setData({ imageUrl: fileID });
+          })
+          .catch(err => {
+            wx.hideLoading();
+            wx.showToast({ title: '上传失败', icon: 'none' });
           });
-        }
       }
     });
   },
 
-  // 发布
   submitPublish() {
-    if (!this.data.description) {
-      wx.showToast({
-        title: '请输入商品描述',
-        icon: 'none'
-      });
+    const { id, title, imageUrl, description, prizeName, prizeValue, costPerEntry, maxParticipants, winProbability, endDate, endTime, prizeTypes, prizeTypeIndex } = this.data;
+
+    if (!title || !prizeName || !costPerEntry) {
+      wx.showToast({ title: '请填写必要信息', icon: 'none' });
       return;
     }
 
-    wx.showLoading({ title: '发布中...' });
+    wx.showLoading({ title: id ? '保存中...' : '发布中...' });
 
-    // 1. 如果有图片，先上传图片
-    const uploadPromise = this.data.tempImage ? 
-      uploadFile(this.data.tempImage) : 
-      Promise.resolve('');
+    const postData = {
+      id, // Include ID if exists
+      title,
+      imageUrl,
+      description,
+      prizeName,
+      prizeValue: parseInt(prizeValue) || 0,
+      prizeType: prizeTypes[prizeTypeIndex],
+      costPerEntry: parseInt(costPerEntry) || 0,
+      maxParticipants: parseInt(maxParticipants) || 100,
+      winProbability: parseFloat(winProbability) || 0.1,
+      endTime: `${endDate} ${endTime}:00`
+    };
 
-    uploadPromise
-      .then(imageUrl => {
-        // 2. 提交帖子数据
-        const postData = {
-          content: this.data.description,
-          imageUrl: imageUrl, // 后端字段: imageUrl (CamelCase from JSON)
-          location: this.data.locationName || '' // 后端字段: location
-        };
-
-        return request('/api/post/create', 'POST', postData);
-      })
+    const url = id ? '/api/post/update' : '/api/post/create';
+    
+    request(url, 'POST', postData)
       .then(res => {
         wx.hideLoading();
-        // res 是后端返回的 post 对象
-        wx.showToast({
-          title: '发布成功',
-          icon: 'success',
-          duration: 1500
-        });
-
+        wx.showToast({ title: id ? '保存成功' : '发布成功', icon: 'success' });
         setTimeout(() => {
-          wx.switchTab({
-            url: '/pages/home/home'
-          });
+          if (id) {
+            wx.navigateBack();
+          } else {
+            wx.switchTab({ url: '/pages/home/home' });
+          }
         }, 1500);
       })
       .catch(err => {
         wx.hideLoading();
         console.error(err);
-        wx.showToast({ title: '发布失败', icon: 'none' });
+        wx.showToast({ title: id ? '保存失败' : '发布失败', icon: 'none' });
       });
   }
 })

@@ -1,34 +1,83 @@
 <view class="page-container">
-  <!-- 图片上传区域 -->
-  <view class="section-title">商品图片</view>
-  <view class="image-uploader" bindtap="chooseImage">
-    <image wx:if="{{tempImage}}" src="{{tempImage}}" mode="aspectFill" class="uploaded-image"></image>
-    <view wx:else class="upload-placeholder">
-      <view class="plus-icon">+</view>
-      <text>点击上传图片</text>
+  <form bindsubmit="submitPublish">
+    <!-- 标题 -->
+    <view class="form-item">
+      <view class="label">活动标题</view>
+      <input class="input" name="title" placeholder="请输入活动标题" bindinput="handleInput" data-field="title" />
     </view>
-  </view>
 
-  <!-- 描述输入区域 -->
-  <view class="section-title">商品描述</view>
-  <view class="input-area">
-    <textarea 
-      class="desc-input" 
-      placeholder="请输入商品详细描述..." 
-      maxlength="200"
-      bindinput="handleInput"
-      value="{{description}}"
-    ></textarea>
-    <view class="word-count">{{description.length}}/200</view>
-  </view>
+    <!-- 封面图上传 -->
+    <view class="form-item">
+      <view class="label">活动封面图</view>
+      <view class="image-uploader" bindtap="chooseImage">
+        <image wx:if="{{imageUrl}}" src="{{imageUrl}}" mode="aspectFill" class="uploaded-image" />
+        <view wx:else class="upload-placeholder">
+          <text class="plus-icon">+</text>
+          <text>上传封面</text>
+        </view>
+      </view>
+    </view>
 
-  <!-- 定位区域 -->
-  <view class="location-area" bindtap="chooseLocation">
-    <view class="location-icon"></view>
-    <text class="location-text">{{locationName || '点击添加定位'}}</text>
-    <view class="arrow-right"></view>
-  </view>
+    <!-- 描述 -->
+    <view class="form-item">
+      <view class="label">活动描述</view>
+      <textarea class="textarea" name="description" placeholder="请输入详细描述" bindinput="handleInput" data-field="description" maxlength="500"></textarea>
+    </view>
 
-  <!-- 发布按钮 -->
-  <button class="submit-btn" bindtap="submitPublish">立即发布</button>
+    <!-- 奖品信息 -->
+    <view class="section-title">奖品设置</view>
+    <view class="form-item">
+      <view class="label">奖品名称</view>
+      <input class="input" name="prizeName" placeholder="例如：iPhone 15" bindinput="handleInput" data-field="prizeName" />
+    </view>
+    <view class="form-row">
+      <view class="form-item half">
+        <view class="label">奖品价值</view>
+        <input class="input" type="number" name="prizeValue" placeholder="0" bindinput="handleInput" data-field="prizeValue" />
+      </view>
+      <view class="form-item half">
+        <view class="label">奖品类型</view>
+        <picker bindchange="bindPrizeTypeChange" value="{{prizeTypeIndex}}" range="{{prizeTypes}}">
+          <view class="picker">
+            {{prizeTypes[prizeTypeIndex]}}
+          </view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- 规则设置 -->
+    <view class="section-title">规则设置</view>
+    <view class="form-row">
+      <view class="form-item half">
+        <view class="label">参与消耗积分</view>
+        <input class="input" type="number" name="costPerEntry" placeholder="例如: 10" bindinput="handleInput" data-field="costPerEntry" />
+      </view>
+      <view class="form-item half">
+        <view class="label">最大参与人数</view>
+        <input class="input" type="number" name="maxParticipants" placeholder="例如: 100" bindinput="handleInput" data-field="maxParticipants" />
+      </view>
+    </view>
+    
+    <view class="form-item">
+        <view class="label">中奖概率 (0-1)</view>
+        <input class="input" type="digit" name="winProbability" placeholder="例如: 0.1" bindinput="handleInput" data-field="winProbability" />
+    </view>
+
+    <view class="form-item">
+      <view class="label">结束时间</view>
+      <picker mode="date" value="{{endDate}}" start="2023-01-01" bindchange="bindDateChange">
+        <view class="picker">
+          日期: {{endDate}}
+        </view>
+      </picker>
+      <picker mode="time" value="{{endTime}}" start="00:00" bindchange="bindTimeChange">
+        <view class="picker">
+          时间: {{endTime}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 发布按钮 -->
+    <button class="submit-btn" form-type="submit">立即发布活动</button>
+  </form>
 </view>

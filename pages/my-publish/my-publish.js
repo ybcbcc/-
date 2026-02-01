@@ -6,19 +6,23 @@ Page({
   },
 
   onLoad(options) {
+    // 页面首次加载
+  },
+
+  onShow() {
     this.fetchData();
   },
 
   fetchData() {
     request('/api/user/publish-history')
       .then(res => {
-        // 适配后端数据到组件格式
+        // 后端返回 []Lottery
         const list = (res || []).map(item => ({
           id: item.id,
-          title: item.content,
-          time: item.createdAt ? item.createdAt.substring(0, 19).replace('T', ' ') : '',
-          extra: item.status === 1 ? '已发布' : '审核中',
-          // 原始数据
+          title: item.title,
+          time: item.createdAt ? item.createdAt.substring(0, 10) : '',
+          extra: item.status === 'active' ? '进行中' : '已结束',
+          // Keep raw data
           ...item
         }));
 
@@ -33,12 +37,9 @@ Page({
   },
 
   handleItemClick(e) {
-    const item = e.detail.item;
-    // 将对象序列化后传递给详情页 (简单做法，适合数据量不大的情况)
-    const postData = encodeURIComponent(JSON.stringify(item));
-    
+    const item = e.detail.item || e.currentTarget.dataset.item;
     wx.navigateTo({
-      url: `/pages/post-detail/post-detail?postData=${postData}`
+      url: `/pages/publish/manage/manage?id=${item.id}`
     });
   }
 })

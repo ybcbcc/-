@@ -4,9 +4,9 @@ Page({
   data: {
     memberInfo: {
       isMember: false,
-      startDate: '--',
-      endDate: '--',
-      remainingDays: 0
+      memberType: 'free',
+      daysRemaining: 0,
+      expireAt: '--'
     }
   },
 

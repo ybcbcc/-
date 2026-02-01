@@ -6,6 +6,7 @@
     "pages/lottery/detail",
     "pages/my-lottery/my-lottery",
     "pages/my-publish/my-publish",
+    "pages/publish/manage/manage",
     "pages/my-member/my-member",
     "pages/post-detail/post-detail",
     "pages/logs/logs"

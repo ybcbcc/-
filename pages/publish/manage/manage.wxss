@@ -1,0 +1,112 @@
+.page-container {
+  padding: 30rpx;
+  background-color: #f7f8fa;
+  min-height: 100vh;
+}
+
+.status-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.status-tag {
+  padding: 6rpx 20rpx;
+  background-color: #eee;
+  color: #999;
+  border-radius: 30rpx;
+  font-size: 24rpx;
+}
+
+.status-tag.active {
+  background-color: #e8f5e9;
+  color: #4caf50;
+}
+
+.time-info {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.info-card {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+  margin-bottom: 60rpx;
+}
+
+.cover-image {
+  width: 100%;
+  height: 300rpx;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+  background-color: #f0f0f0;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.desc {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 30rpx;
+  line-height: 1.6;
+}
+
+.detail-row {
+  display: flex;
+  margin-bottom: 20rpx;
+}
+
+.detail-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 8rpx;
+}
+
+.value {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.value.highlight {
+  color: #673ab7;
+  font-weight: bold;
+}
+
+.action-area {
+  display: flex;
+  gap: 30rpx;
+}
+
+.btn {
+  flex: 1;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+}
+
+.edit-btn {
+  background-color: #fff;
+  color: #673ab7;
+  border: 2rpx solid #673ab7;
+}
+
+.delete-btn {
+  background-color: #fff;
+  color: #ff5252;
+  border: 2rpx solid #ff5252;
+}
