@@ -60,7 +60,25 @@ Page({
       .catch(err => {
         this.setData({ isDrawing: false });
         console.error("Draw error:", err);
-        wx.showToast({ title: '抽奖失败或积分不足', icon: 'none' });
+        
+        let content = '抽奖失败';
+        if (err.message && err.message.includes('Already participated')) {
+            content = '您已经抽过了';
+        } else if (err.message && err.message.includes('Insufficient integral')) {
+            content = '您当前积分不足';
+        } else if (err.message && err.message.includes('Participants limit reached')) {
+            content = '参与人数已满';
+        } else if (err.message && err.message.includes('Activity ended')) {
+            content = '活动已结束';
+        } else {
+            content = err.message || '未知错误';
+        }
+        
+        wx.showModal({
+            title: '提示',
+            content,
+            showCancel: false
+        });
       });
   }
 })

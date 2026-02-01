@@ -36,7 +36,7 @@ Page({
 
   handleEdit() {
     wx.navigateTo({
-      url: `/pages/publish/publish?id=${this.data.id}`
+      url: `/pages/publish/edit/edit?id=${this.data.id}`
     });
   },
 

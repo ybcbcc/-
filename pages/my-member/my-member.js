@@ -17,7 +17,20 @@ Page({
   fetchMemberInfo() {
     request('/api/member/info')
       .then(res => {
-        this.setData({
+        // 格式化日期
+        if (res.expireAt) {
+             res.expireAtFormat = res.expireAt.replace('T', ' ').substring(0, 10);
+         } else {
+             res.expireAtFormat = '--';
+         }
+         
+         if (res.memberSince) {
+             res.memberSinceFormat = res.memberSince.replace('T', ' ').substring(0, 10);
+         } else {
+             res.memberSinceFormat = '--';
+         }
+         
+         this.setData({
           memberInfo: res
         });
       })

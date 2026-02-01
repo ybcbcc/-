@@ -19,8 +19,8 @@
       <text class="menu-title">{{item.title}}</text>
       
       <!-- 特殊处理：如果是积分，显示数字且不显示箭头 -->
-      <block wx:if="{{item.id === 'points'}}">
-        <text class="points-value">{{userInfo.points}}</text>
+      <block wx:if="{{item.id === 'integral'}}">
+        <text class="points-value">{{userInfo.integral}}</text>
       </block>
       <block wx:else>
         <!-- 右侧箭头 -->

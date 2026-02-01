@@ -26,8 +26,14 @@ const request = (url, method = 'GET', data = {}) => {
           if (result.code === 0) {
             resolve(result.data);
           } else if (result.code === 401) {
-            // Token 失效
-            wx.showToast({ title: '登录已过期', icon: 'none' });
+            // Token 失效，清除缓存并提示
+            wx.removeStorageSync('token');
+            wx.showToast({ title: '登录已过期，请重试', icon: 'none' });
+            
+            // 延迟跳转或让用户重新触发登录
+            // 这里简单处理：清空 token 后，app.js 的 onShow 或页面逻辑通常会重新检查登录
+            // 或者直接调用 app.js 的登录方法（如果暴露的话）
+            
             reject(new Error('Unauthorized'));
           } else {
             wx.showToast({ title: result.errorMsg || '请求失败', icon: 'none' });

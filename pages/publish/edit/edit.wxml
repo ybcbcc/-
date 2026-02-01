@@ -77,7 +77,7 @@
       </picker>
     </view>
 
-    <!-- 发布按钮 -->
-    <button class="submit-btn" form-type="submit">立即发布活动</button>
+    <!-- 按钮 -->
+    <button class="submit-btn" form-type="submit">保存修改</button>
   </form>
 </view>

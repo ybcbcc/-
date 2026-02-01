@@ -21,6 +21,9 @@ Page({
 
   onShow() {
     this.checkLoginStatus();
+    app.ensureLogin(() => {
+        this.checkLoginStatus();
+    });
   },
 
   checkLoginStatus() {
@@ -58,7 +61,10 @@ Page({
 
   handleLogin() {
     if (this.data.isLoggedIn) {
-      this.updateUserProfile();
+      // 已登录，跳转到编辑页
+      wx.navigateTo({
+        url: '/pages/profile/edit/edit'
+      });
     } else {
       wx.showLoading({ title: '登录中...' });
       app.login()
@@ -69,10 +75,12 @@ Page({
           
           wx.showModal({
             title: '提示',
-            content: '登录成功，是否同步微信头像和昵称？',
+            content: '登录成功，是否完善个人资料？',
             success: (res) => {
               if (res.confirm) {
-                this.updateUserProfile();
+                wx.navigateTo({
+                  url: '/pages/profile/edit/edit'
+                });
               }
             }
           });
@@ -82,32 +90,6 @@ Page({
           wx.showToast({ title: '登录失败', icon: 'none' });
         });
     }
-  },
-
-  updateUserProfile() {
-    wx.getUserProfile({
-      desc: '完善会员资料', 
-      success: (res) => {
-        const { avatarUrl, nickName } = res.userInfo;
-        
-        this.setData({
-          'userInfo.avatarUrl': avatarUrl,
-          'userInfo.nickName': nickName
-        });
-        
-        request('/api/user/update', 'POST', {
-          nickName: nickName,
-          avatarUrl: avatarUrl
-        }).then(res => {
-          wx.showToast({ title: '资料已更新', icon: 'success' });
-        }).catch(err => {
-          wx.showToast({ title: '同步失败', icon: 'none' });
-        });
-      },
-      fail: (err) => {
-        console.log('User denied profile access');
-      }
-    });
   },
 
   handleMenuClick(e) {

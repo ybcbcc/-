@@ -3,6 +3,9 @@ const { request } = require('./utils/request.js');
 
 App({
   onLaunch() {
+    // 启动时清除发布草稿（实现关闭小程序后草稿失效）
+    wx.removeStorageSync('publish_draft');
+
     // 初始化云开发环境
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力');
@@ -25,7 +28,7 @@ App({
       // 检查是否有 Token
       const token = wx.getStorageSync('token');
       if (token) {
-        // 简单验证 Token 是否有效 (实际可增加 checkSession)
+        this.globalData.isLoggedIn = true;
         resolve(token);
         return;
       }
@@ -38,6 +41,7 @@ App({
               .then(data => {
                 if (data.token) {
                   wx.setStorageSync('token', data.token);
+                  this.globalData.isLoggedIn = true;
                   resolve(data.token);
                 } else {
                   reject(new Error('No token received'));
@@ -57,8 +61,35 @@ App({
     });
   },
 
+  // 确保用户已登录，未登录则弹窗提示
+  ensureLogin(callback) {
+    if (this.globalData.isLoggedIn || wx.getStorageSync('token')) {
+      if (callback) callback();
+      return;
+    }
+
+    wx.showModal({
+      title: '提示',
+      content: '该功能需要登录后使用，是否立即登录？',
+      success: (res) => {
+        if (res.confirm) {
+          wx.showLoading({ title: '登录中' });
+          this.login().then(() => {
+            wx.hideLoading();
+            wx.showToast({ title: '登录成功' });
+            if (callback) callback();
+          }).catch(() => {
+            wx.hideLoading();
+            wx.showToast({ title: '登录失败', icon: 'none' });
+          });
+        }
+      }
+    });
+  },
+
   globalData: {
     userInfo: null,
+    isLoggedIn: false,
     lotteryList: [] // 实际应由首页自行加载，这里仅作兼容
   }
 })

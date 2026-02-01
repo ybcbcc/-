@@ -1,9 +1,9 @@
 const app = getApp();
-const { request, uploadFile } = require('../../utils/request.js');
+const { request, uploadFile } = require('../../../utils/request.js');
 
 Page({
   data: {
-    id: '', // 用于编辑模式
+    id: '',
     title: '',
     imageUrl: '',
     description: '',
@@ -12,65 +12,20 @@ Page({
     costPerEntry: '',
     maxParticipants: '',
     winProbability: '',
-    
+    endDate: '2023-12-31',
+    endTime: '23:59',
     prizeTypes: ['integral', 'membership', 'avatar_frame', 'chat_bubble', 'theme', 'external_vip'],
-    prizeTypeIndex: 0,
-    
-    endDate: '2025-12-31',
-    endTime: '23:59'
+    prizeTypeIndex: 0
   },
 
   onLoad(options) {
-    // Set default date to tomorrow
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    this.setData({
-      endDate: tomorrow.toISOString().split('T')[0]
-    });
-  },
-
-  onShow() {
-    // 进入页面时检查登录
-    app.ensureLogin();
-
-    // 检查是否有草稿（来自上次 onHide 自动保存的）
-    const draft = wx.getStorageSync('publish_draft');
-    
-    // 如果有草稿，询问是否恢复
-    if (draft) {
-        wx.showModal({
-            title: '提示',
-            content: '检测到未完成的草稿，是否恢复？',
-            success: (res) => {
-                if (res.confirm) {
-                    this.setData(draft);
-                } else {
-                    // 用户选择不恢复，彻底清除
-                    wx.removeStorageSync('publish_draft');
-                }
-            }
-        });
+    if (options.id) {
+      this.setData({ id: options.id });
+      this.loadDetail(options.id);
+    } else {
+        wx.showToast({ title: '参数错误', icon: 'none' });
+        setTimeout(() => wx.navigateBack(), 1500);
     }
-  },
-
-  onHide() {
-    // 离开页面时，如果内容不为空且未提交，自动保存为草稿
-    if (this.hasContent() && !this.data.submitted) {
-        // 保存草稿
-        const { title, imageUrl, description, prizeName, prizeValue, costPerEntry, maxParticipants, winProbability, endDate, endTime, prizeTypeIndex } = this.data;
-        wx.setStorageSync('publish_draft', {
-            title, imageUrl, description, prizeName, prizeValue, costPerEntry, maxParticipants, winProbability, endDate, endTime, prizeTypeIndex
-        });
-    }
-    
-    // 离开时立即清空页面，确保下次进入时是空的
-    this.resetForm();
-  },
-
-  hasContent() {
-      const d = this.data;
-      // 只要填写了任意一项主要内容
-      return d.title || d.description || d.prizeName || d.imageUrl;
   },
 
   loadDetail(id) {
@@ -158,22 +113,17 @@ Page({
   },
 
   submitPublish() {
-    app.ensureLogin(() => {
-        this.doSubmitPublish();
-    });
-  },
-
-  doSubmitPublish() {
-    const { title, imageUrl, description, prizeName, prizeValue, costPerEntry, maxParticipants, winProbability, endDate, endTime, prizeTypes, prizeTypeIndex } = this.data;
+    const { id, title, imageUrl, description, prizeName, prizeValue, costPerEntry, maxParticipants, winProbability, endDate, endTime, prizeTypes, prizeTypeIndex } = this.data;
 
     if (!title || !prizeName || !costPerEntry) {
       wx.showToast({ title: '请填写必要信息', icon: 'none' });
       return;
     }
 
-    wx.showLoading({ title: '发布中...' });
+    wx.showLoading({ title: '保存中...' });
 
     const postData = {
+      id,
       title,
       imageUrl,
       description,
@@ -186,47 +136,18 @@ Page({
       endTime: `${endDate} ${endTime}:00`
     };
 
-    request('/api/post/create', 'POST', postData)
+    request('/api/post/update', 'POST', postData)
       .then(res => {
         wx.hideLoading();
-        wx.showToast({ title: '发布成功', icon: 'success' });
-        
-        // 标记已提交，防止 onHide 存草稿
-        this.setData({ submitted: true });
-        
-        // 清除草稿
-        wx.removeStorageSync('publish_draft');
-
+        wx.showToast({ title: '保存成功', icon: 'success' });
         setTimeout(() => {
-            // 如果是发布，重置表单并跳到首页
-            this.resetForm();
-            wx.switchTab({ url: '/pages/home/home' });
+            wx.navigateBack();
         }, 1500);
       })
       .catch(err => {
         wx.hideLoading();
         console.error(err);
-        wx.showToast({ title: '发布失败', icon: 'none' });
-      });
-  },
-
-  resetForm() {
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      
-      this.setData({
-          title: '',
-          imageUrl: '',
-          description: '',
-          prizeName: '',
-          prizeValue: '',
-          costPerEntry: '',
-          maxParticipants: '',
-          winProbability: '',
-          endDate: tomorrow.toISOString().split('T')[0],
-          endTime: '23:59',
-          prizeTypeIndex: 0,
-          submitted: false
+        wx.showToast({ title: '保存失败', icon: 'none' });
       });
   }
 })

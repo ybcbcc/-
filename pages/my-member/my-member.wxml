@@ -7,19 +7,19 @@
     
     <view class="info-row">
       <text class="label">充值日期</text>
-      <text class="value">{{memberInfo.startDate}}</text>
+      <text class="value">{{memberInfo.memberSinceFormat}}</text>
     </view>
     
     <view class="info-row">
       <text class="label">到期时间</text>
-      <text class="value">{{memberInfo.endDate}}</text>
+      <text class="value">{{memberInfo.expireAtFormat}}</text>
     </view>
     
     <view class="divider"></view>
     
     <view class="info-row highlight">
       <text class="label">剩余天数</text>
-      <text class="value big">{{memberInfo.remainingDays}} 天</text>
+      <text class="value big">{{memberInfo.daysRemaining}} 天</text>
     </view>
   </view>
   
