@@ -1,0 +1,5 @@
+/* pages/my-lottery/my-lottery.wxss */
+.page-container {
+  min-height: 100vh;
+  background-color: var(--page-bg);
+}

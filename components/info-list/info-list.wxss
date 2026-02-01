@@ -1,0 +1,69 @@
+/* components/info-list/info-list.wxss */
+.list-container {
+  background-color: #fff;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.item-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-title {
+  font-size: 30rpx;
+  color: var(--text-main);
+  margin-bottom: 8rpx;
+  font-weight: 500;
+}
+
+.item-desc {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  margin-bottom: 6rpx;
+}
+
+.item-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.item-extra {
+  display: flex;
+  align-items: center;
+  margin-left: 20rpx;
+}
+
+.extra-text {
+  font-size: 28rpx;
+  color: var(--theme-color);
+  margin-right: 10rpx;
+}
+
+.arrow-right {
+  width: 14rpx;
+  height: 14rpx;
+  border-top: 2rpx solid #ccc;
+  border-right: 2rpx solid #ccc;
+  transform: rotate(45deg);
+}
+
+.empty-state {
+  padding: 60rpx;
+  text-align: center;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+}

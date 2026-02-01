@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "抽奖活动",
+  "navigationBarBackgroundColor": "#673ab7",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "lottery-card": "/components/lottery-card/lottery-card"
+  }
+}

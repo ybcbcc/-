@@ -1,0 +1,35 @@
+<view class="page-container">
+  <!-- 文本内容 -->
+  <view class="post-content">{{post.content}}</view>
+
+  <!-- 图片展示 (支持点击预览) -->
+  <image 
+    wx:if="{{post.imageUrl}}" 
+    class="post-image" 
+    src="{{post.imageUrl}}" 
+    mode="widthFix" 
+    bindtap="previewImage"
+  ></image>
+
+  <!-- 详细信息 -->
+  <view class="post-info">
+    <view class="info-item">
+      <text class="info-label">发布时间</text>
+      <text class="info-value">{{post.createdAtFormat}}</text>
+    </view>
+    
+    <view class="info-item" wx:if="{{post.location}}">
+      <text class="info-label">所在位置</text>
+      <text class="info-value">{{post.location}}</text>
+    </view>
+
+    <view class="info-item">
+      <text class="info-label">状态</text>
+      <view class="info-value">
+        <text class="status-tag {{post.status === 1 ? 'status-published' : 'status-audit'}}">
+          {{post.status === 1 ? '已发布' : '审核中'}}
+        </text>
+      </view>
+    </view>
+  </view>
+</view>

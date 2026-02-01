@@ -1,0 +1,49 @@
+/* components/lottery-card/lottery-card.wxss */
+.lottery-item {
+  background-color: var(--card-bg);
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.item-image {
+  width: 100%;
+  height: 240rpx;
+  background-color: var(--placeholder-light);
+}
+
+.placeholder-img {
+  width: 100%;
+  height: 100%;
+  background-color: var(--placeholder-dark);
+}
+
+.item-content {
+  padding: 16rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: var(--text-main);
+  margin-bottom: 12rpx;
+  /* 限制两行显示 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.item-status {
+  align-self: flex-start;
+  font-size: 22rpx;
+  color: var(--theme-color);
+  background-color: var(--tag-bg);
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+}

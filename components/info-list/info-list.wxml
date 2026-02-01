@@ -1,0 +1,21 @@
+<view class="list-container">
+  <block wx:if="{{list.length > 0}}">
+    <view class="list-item" wx:for="{{list}}" wx:key="index" bindtap="onItemTap" data-item="{{item}}">
+      <view class="item-main">
+        <view class="item-title">{{item.title}}</view>
+        <view class="item-desc" wx:if="{{item.desc}}">{{item.desc}}</view>
+        <view class="item-time" wx:if="{{item.time}}">{{item.time}}</view>
+      </view>
+      <view class="item-extra" wx:if="{{item.extra || showArrow}}">
+        <text class="extra-text" wx:if="{{item.extra}}">{{item.extra}}</text>
+        <view class="arrow-right" wx:if="{{showArrow}}"></view>
+      </view>
+    </view>
+  </block>
+  
+  <block wx:else>
+    <view class="empty-state">
+      <text class="empty-text">{{emptyText}}</text>
+    </view>
+  </block>
+</view>

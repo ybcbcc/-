@@ -1,0 +1,3 @@
+<view class="page-container">
+  <info-list list="{{publishList}}" bind:click="handleItemClick" emptyText="暂无发布记录"></info-list>
+</view>

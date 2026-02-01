@@ -1,0 +1,24 @@
+<view class="page-container">
+  <!-- 活动信息 -->
+  <view class="info-card">
+    <view class="title">{{lotteryInfo.title}}</view>
+    <view class="desc">{{lotteryInfo.desc}}</view>
+  </view>
+
+  <!-- 结果展示区域 -->
+  <view class="result-area" wx:if="{{result}}">
+    <view class="result-title">抽奖结果</view>
+    <view class="result-content">{{result}}</view>
+  </view>
+
+  <!-- 抽奖操作区域 -->
+  <view class="action-area">
+    <button 
+      class="draw-btn {{isDrawing ? 'disabled' : ''}}" 
+      bindtap="handleDraw" 
+      disabled="{{isDrawing}}"
+    >
+      {{isDrawing ? '抽奖中...' : '立即抽奖'}}
+    </button>
+  </view>
+</view>

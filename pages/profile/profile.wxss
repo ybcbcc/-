@@ -1,0 +1,98 @@
+/* pages/profile/profile.wxss */
+.page-container {
+  min-height: 100vh;
+  background-color: var(--page-bg);
+}
+
+/* 顶部个人信息区域 */
+.user-header {
+  background-color: var(--theme-color);
+  padding: 60rpx 40rpx 80rpx; /* 底部留白给波浪或直接连接列表 */
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-container {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  border: 4rpx solid rgba(255, 255, 255, 0.5);
+  overflow: hidden;
+  margin-right: 30rpx;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: var(--placeholder-light);
+}
+
+.nickname {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+/* 菜单列表区域 */
+.menu-list {
+  background-color: #fff;
+  margin: -40rpx 30rpx 0; /* 负margin上移，形成卡片效果 */
+  border-radius: 20rpx;
+  padding: 0 30rpx;
+  box-shadow: 0 4rpx 12rpx var(--shadow-color);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 30rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-icon-placeholder {
+  width: 40rpx;
+  height: 40rpx;
+  background-color: var(--placeholder-dark);
+  border-radius: 8rpx;
+  margin-right: 20rpx;
+}
+
+.menu-title {
+  flex: 1;
+  font-size: 30rpx;
+  color: var(--text-main);
+}
+
+/* 简单的CSS箭头 */
+.arrow-right {
+  width: 16rpx;
+  height: 16rpx;
+  border-top: 2rpx solid #ccc;
+  border-right: 2rpx solid #ccc;
+  transform: rotate(45deg);
+}
+
+.points-value {
+  font-size: 32rpx;
+  color: #ff5722;
+  font-weight: bold;
+  margin-right: 10rpx;
+}

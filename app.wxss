@@ -1,0 +1,25 @@
+/**app.wxss**/
+page {
+  /* 全局色彩配置 - 紫色系 */
+  --theme-color: #673ab7;          /* 主题色 */
+  --page-bg: #f3e5f5;              /* 页面背景 */
+  --card-bg: #ffffff;              /* 卡片背景 */
+  
+  --text-main: #333333;            /* 主要文字 */
+  --text-secondary: #9575cd;       /* 次要文字/空状态文字 */
+  
+  --placeholder-light: #e1bee7;    /* 浅色占位块 */
+  --placeholder-dark: #d1c4e9;     /* 深色占位块/图标 */
+  
+  --tag-bg: #ede7f6;               /* 标签背景 */
+  --shadow-color: rgba(103, 58, 183, 0.1); /* 阴影颜色 */
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0 0;
+  box-sizing: border-box;
+} 

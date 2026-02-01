@@ -1,0 +1,80 @@
+/* pages/lottery/detail.wxss */
+.page-container {
+  min-height: 100vh;
+  background-color: var(--page-bg);
+  padding: 40rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info-card {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  box-shadow: 0 4rpx 12rpx var(--shadow-color);
+  margin-bottom: 60rpx;
+  text-align: center;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: var(--text-main);
+  margin-bottom: 20rpx;
+}
+
+.desc {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+}
+
+.result-area {
+  width: 100%;
+  background-color: #ede7f6; /* 浅紫色背景 */
+  border-radius: 20rpx;
+  padding: 40rpx;
+  margin-bottom: 60rpx;
+  text-align: center;
+  border: 2rpx dashed var(--theme-color);
+}
+
+.result-title {
+  font-size: 32rpx;
+  color: var(--theme-color);
+  margin-bottom: 20rpx;
+  font-weight: bold;
+}
+
+.result-content {
+  font-size: 40rpx;
+  color: #ff5722; /* 醒目的橙红色 */
+  font-weight: bold;
+}
+
+.action-area {
+  width: 100%;
+  /* margin-top: auto; 移除推到底部的样式 */
+  padding-bottom: 40rpx;
+}
+
+.draw-btn {
+  background-color: var(--theme-color);
+  color: #fff;
+  border-radius: 50rpx;
+  height: 100rpx;
+  /* line-height: 100rpx; 移除 line-height，改用 flex 居中 */
+  font-size: 36rpx;
+  font-weight: bold;
+  box-shadow: 0 8rpx 16rpx rgba(103, 58, 183, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.draw-btn.disabled {
+  background-color: #b39ddb;
+  box-shadow: none;
+}

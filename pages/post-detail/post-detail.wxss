@@ -1,0 +1,61 @@
+/* pages/post-detail/post-detail.wxss */
+.page-container {
+  padding: 30rpx;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+.post-content {
+  font-size: 32rpx;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 30rpx;
+  word-wrap: break-word;
+}
+
+.post-image {
+  width: 100%;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+}
+
+.post-info {
+  margin-top: 40rpx;
+  padding-top: 30rpx;
+  border-top: 1rpx solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.info-item {
+  display: flex;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.info-label {
+  color: #999;
+  width: 140rpx;
+}
+
+.info-value {
+  flex: 1;
+}
+
+.status-tag {
+  display: inline-block;
+  padding: 4rpx 12rpx;
+  border-radius: 6rpx;
+  font-size: 24rpx;
+}
+
+.status-published {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-audit {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}

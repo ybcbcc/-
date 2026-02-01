@@ -1,0 +1,5 @@
+/* pages/my-publish/my-publish.wxss */
+.page-container {
+  min-height: 100vh;
+  background-color: var(--page-bg);
+}

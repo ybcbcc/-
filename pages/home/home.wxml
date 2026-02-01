@@ -1,0 +1,22 @@
+<view class="page-container">
+  <!-- 列表区域 -->
+  <block wx:if="{{lotteryList.length > 0}}">
+    <view class="lottery-list">
+      <lottery-card 
+        class="lottery-card-wrapper" 
+        wx:for="{{lotteryList}}" 
+        wx:key="id" 
+        item="{{item}}" 
+        bind:click="goToDetail"
+      />
+    </view>
+  </block>
+
+  <!-- 空列表兜底 -->
+  <block wx:else>
+    <view class="empty-state">
+      <view class="empty-icon"></view>
+      <text class="empty-text">暂时没有抽奖活动哦~</text>
+    </view>
+  </block>
+</view>

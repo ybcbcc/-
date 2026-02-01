@@ -1,0 +1,27 @@
+<view class="page-container">
+  <view class="member-card">
+    <view class="card-header">
+      <view class="vip-icon">VIP</view>
+      <text class="card-title">尊贵会员</text>
+    </view>
+    
+    <view class="info-row">
+      <text class="label">充值日期</text>
+      <text class="value">{{memberInfo.startDate}}</text>
+    </view>
+    
+    <view class="info-row">
+      <text class="label">到期时间</text>
+      <text class="value">{{memberInfo.endDate}}</text>
+    </view>
+    
+    <view class="divider"></view>
+    
+    <view class="info-row highlight">
+      <text class="label">剩余天数</text>
+      <text class="value big">{{memberInfo.remainingDays}} 天</text>
+    </view>
+  </view>
+  
+  <button class="renew-btn" bindtap="handleRenew">立即续费</button>
+</view>
