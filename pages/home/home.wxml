@@ -1,10 +1,11 @@
 <view class="page-container">
+  <filter-bar options="{{filterOptions}}" selectedKey="{{selectedKey}}" bind:change="onFilterChange" />
   <!-- 列表区域 -->
-  <block wx:if="{{lotteryList.length > 0}}">
+  <block wx:if="{{filteredList.length > 0}}">
     <view class="lottery-list">
       <lottery-card 
         class="lottery-card-wrapper" 
-        wx:for="{{lotteryList}}" 
+        wx:for="{{filteredList}}" 
         wx:key="id" 
         item="{{item}}" 
         bind:click="goToDetail"

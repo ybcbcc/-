@@ -63,6 +63,19 @@
   border-bottom: 1rpx solid #f0f0f0;
 }
 
+.menu-item.button,
+button.menu-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 30rpx 0;
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  text-align: left;
+  box-sizing: border-box;
+}
+
 .menu-item:last-child {
   border-bottom: none;
 }
@@ -79,6 +92,7 @@
   flex: 1;
   font-size: 30rpx;
   color: var(--text-main);
+  font-weight: normal;
 }
 
 /* 简单的CSS箭头 */
@@ -95,4 +109,13 @@
   color: #ff5722;
   font-weight: bold;
   margin-right: 10rpx;
+}
+
+.contact-btn {
+  background-color: #fff;
+  color: var(--theme-color);
+  border-radius: 32rpx;
+  font-size: 28rpx;
+  padding: 12rpx 24rpx;
+  box-shadow: 0 4rpx 12rpx var(--shadow-color);
 }

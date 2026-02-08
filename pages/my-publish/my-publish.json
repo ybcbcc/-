@@ -3,6 +3,7 @@
   "navigationBarBackgroundColor": "#673ab7",
   "navigationBarTextStyle": "white",
   "usingComponents": {
-    "info-list": "/components/info-list/info-list"
+    "info-list": "/components/info-list/info-list",
+    "filter-bar": "/components/filter-bar/filter-bar"
   }
 }

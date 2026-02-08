@@ -1,3 +1,4 @@
 <view class="page-container">
-  <info-list list="{{lotteryList}}" bind:click="handleItemClick" emptyText="暂无抽奖记录"></info-list>
+  <filter-bar options="{{filterOptions}}" selectedKey="{{selectedKey}}" bind:change="onFilterChange" />
+  <info-list list="{{filteredList}}" bind:click="handleItemClick" emptyText="暂无抽奖记录"></info-list>
 </view>

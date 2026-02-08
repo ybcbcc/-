@@ -1,4 +1,4 @@
 <view class="page-container">
   <filter-bar options="{{filterOptions}}" selectedKey="{{selectedKey}}" bind:change="onFilterChange" />
-  <info-list list="{{filteredList}}" bind:click="handleItemClick" emptyText="暂无发布记录"></info-list>
+  <info-list list="{{list}}" bind:click="handleItemClick" emptyText="暂无抽奖记录"></info-list>
 </view>

@@ -1,0 +1,7 @@
+<view class="filter-bar">
+  <view class="filter-item {{item.key === selectedKey ? 'active' : ''}}" 
+        wx:for="{{options}}" wx:key="key" 
+        data-key="{{item.key}}" bindtap="onTap">
+    <text>{{item.text}}</text>
+  </view>
+</view>

@@ -3,7 +3,14 @@ const { request } = require('../../utils/request.js');
 
 Page({
   data: {
-    lotteryList: []
+    lotteryList: [],
+    filteredList: [],
+    selectedKey: 'active',
+    filterOptions: [
+      { key: 'all', text: '全部' },
+      { key: 'active', text: '进行中' },
+      { key: 'finished', text: '已结束' }
+    ]
   },
   onShow() {
     this.fetchHomeData();
@@ -28,6 +35,7 @@ Page({
         this.setData({
           lotteryList: list
         });
+        this.applyFilter();
       })
       .catch(err => {
         console.error('Fetch home data failed', err);
@@ -41,5 +49,24 @@ Page({
     wx.navigateTo({
       url: `/pages/lottery/detail?id=${id}`
     });
+  },
+  onFilterChange(e) {
+    const key = e.detail.key;
+    this.setData({ selectedKey: key });
+    this.applyFilter();
+  },
+  applyFilter() {
+    const key = this.data.selectedKey;
+    const src = this.data.lotteryList || [];
+    if (key === 'all') {
+      this.setData({ filteredList: src });
+    } else {
+      const list = src.filter(i => {
+        if (key === 'active') return i.status === '进行中';
+        if (key === 'finished') return i.status !== '进行中';
+        return true;
+      });
+      this.setData({ filteredList: list });
+    }
   }
 })

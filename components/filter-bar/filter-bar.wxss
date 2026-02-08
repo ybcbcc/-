@@ -1,0 +1,17 @@
+.filter-bar {
+  display: flex;
+  gap: 12rpx;
+  padding: 12rpx 16rpx;
+  background: var(--page-bg, #f6f6f6);
+}
+.filter-item {
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  background: #eee;
+  color: #666;
+  font-size: 24rpx;
+}
+.filter-item.active {
+  background: #673ab7;
+  color: #fff;
+}

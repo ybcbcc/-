@@ -49,6 +49,20 @@ Page({
           'userInfo.avatarUrl': res.avatarUrl || '',
           'userInfo.memberType': res.memberType
         });
+        if (res.role === 'admin') {
+          const exists = this.data.menuList.find(i => i.id === 'audit');
+          if (!exists) {
+            const list = [...this.data.menuList];
+            const idx = list.findIndex(i => i.id === 'contact');
+            const item = { id: 'audit', title: '审核[管理员专属]', icon: '' };
+            if (idx >= 0) {
+              list.splice(idx + 1, 0, item);
+            } else {
+              list.push(item);
+            }
+            this.setData({ menuList: list });
+          }
+        }
       })
       .catch(err => {
         console.error('Fetch user info failed', err);
@@ -108,7 +122,8 @@ Page({
       const routes = {
         'lottery': '/pages/my-lottery/my-lottery',
         'publish': '/pages/my-publish/my-publish',
-        'member': '/pages/my-member/my-member'
+        'member': '/pages/my-member/my-member',
+        'audit': '/pages/admin/audit-list/audit-list'
       };
 
       const url = routes[item.id];

@@ -12,6 +12,11 @@
     <image wx:if="{{lottery.imageUrl}}" src="{{lottery.imageUrl}}" mode="aspectFill" class="cover-image" />
     <view class="title">{{lottery.title}}</view>
     <view class="desc">{{lottery.description || '暂无描述'}}</view>
+    <view class="audit-row">
+      <text class="audit-tag {{lottery.auditStatus === 'approved' ? 'approved' : (lottery.auditStatus === 'rejected' ? 'rejected' : '')}}">
+        审核：{{lottery.auditStatus}}
+      </text>
+    </view>
     
     <view class="detail-row">
       <view class="detail-item">

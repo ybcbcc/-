@@ -58,6 +58,25 @@
   margin-bottom: 30rpx;
   line-height: 1.6;
 }
+.audit-row {
+  margin-bottom: 20rpx;
+}
+.audit-tag {
+  display: inline-block;
+  padding: 6rpx 20rpx;
+  border-radius: 30rpx;
+  background: #eee;
+  color: #666;
+  font-size: 24rpx;
+}
+.audit-tag.approved {
+  background: #e8f5e9;
+  color: #4caf50;
+}
+.audit-tag.rejected {
+  background: #ffebee;
+  color: #f44336;
+}
 
 .detail-row {
   display: flex;

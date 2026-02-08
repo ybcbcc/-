@@ -2,7 +2,14 @@ const { request } = require('../../utils/request.js');
 
 Page({
   data: {
-    lotteryList: []
+    lotteryList: [],
+    filteredList: [],
+    selectedKey: 'all',
+    filterOptions: [
+      { key: 'all', text: '全部' },
+      { key: 'won', text: '已中奖' },
+      { key: 'lost', text: '未中奖' }
+    ]
   },
 
   onLoad(options) {
@@ -34,6 +41,7 @@ Page({
         this.setData({
           lotteryList: list
         });
+        this.applyFilter();
       })
       .catch(err => {
         console.error(err);
@@ -47,5 +55,21 @@ Page({
     wx.navigateTo({
         url: `/pages/lottery/detail?id=${item.id}`
     });
+  },
+  onFilterChange(e) {
+    const key = e.detail.key;
+    this.setData({ selectedKey: key });
+    this.applyFilter();
+  },
+  applyFilter() {
+    const key = this.data.selectedKey;
+    const src = this.data.lotteryList || [];
+    if (key === 'all') {
+      this.setData({ filteredList: src });
+    } else if (key === 'won') {
+      this.setData({ filteredList: src.filter(i => (i.originalItem && i.originalItem.isWinner)) });
+    } else {
+      this.setData({ filteredList: src.filter(i => !(i.originalItem && i.originalItem.isWinner)) });
+    }
   }
 })
