@@ -1,0 +1,30 @@
+.page-container {
+  min-height: 100vh;
+  background-color: var(--page-bg);
+}
+.top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8rpx 16rpx;
+}
+.float-ball {
+  position: fixed;
+  right: 24rpx;
+  bottom: 24rpx;
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background-color: #673ab7;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 16rpx rgba(0,0,0,0.2);
+  padding: 0;
+  border: none;
+  min-width: 0;
+  font-size: 28rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+}

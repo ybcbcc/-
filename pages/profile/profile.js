@@ -62,6 +62,18 @@ Page({
             }
             this.setData({ menuList: list });
           }
+          const existsAct = this.data.menuList.find(i => i.id === 'activity-admin');
+          if (!existsAct) {
+            const list2 = [...this.data.menuList];
+            const idx2 = list2.findIndex(i => i.id === 'audit');
+            const item2 = { id: 'activity-admin', title: '活动发布[管理员专属]', icon: '' };
+            if (idx2 >= 0) {
+              list2.splice(idx2 + 1, 0, item2);
+            } else {
+              list2.push(item2);
+            }
+            this.setData({ menuList: list2 });
+          }
         }
       })
       .catch(err => {
@@ -123,7 +135,8 @@ Page({
         'lottery': '/pages/my-lottery/my-lottery',
         'publish': '/pages/my-publish/my-publish',
         'member': '/pages/my-member/my-member',
-        'audit': '/pages/admin/audit-list/audit-list'
+        'audit': '/pages/admin/audit-list/audit-list',
+        'activity-admin': '/pages/activity/list/list'
       };
 
       const url = routes[item.id];

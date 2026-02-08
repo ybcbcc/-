@@ -1,5 +1,7 @@
 <view class="page-container">
-  <filter-bar options="{{filterOptions}}" selectedKey="{{selectedKey}}" bind:change="onFilterChange" />
+  <view class="filter-row">
+    <filter-bar options="{{filterOptions}}" selectedKey="{{selectedKey}}" bind:change="onFilterChange" />
+  </view>
   <!-- 列表区域 -->
   <block wx:if="{{filteredList.length > 0}}">
     <view class="lottery-list">
@@ -20,4 +22,18 @@
       <text class="empty-text">暂时没有抽奖活动哦~</text>
     </view>
   </block>
+
+  <!-- 活动广告浮层 -->
+  <block wx:if="{{showAdModal}}">
+    <view class="mask" bindtap="closeAd"></view>
+    <view class="ad-modal">
+      <scroll-view class="ad-content" scroll-y="true">
+        <text class="ad-title">{{adData.name}}</text>
+        <image wx:if="{{adData.imageUrl}}" class="ad-image" src="{{adData.imageUrl}}" mode="widthFix"></image>
+        <text class="ad-text">{{adData.content}}</text>
+      </scroll-view>
+    </view>
+    <view class="mask-close" bindtap="closeAd">✕</view>
+  </block>
+  <view class="float-ball" bindtap="reopenAnnouncement">公告</view>
 </view>

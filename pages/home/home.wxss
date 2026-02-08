@@ -5,6 +5,31 @@
   padding: 20rpx;
   box-sizing: border-box;
 }
+.filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.float-ball {
+  position: fixed;
+  right: 24rpx;
+  bottom: 24rpx;
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background-color: #673ab7;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 16rpx rgba(0,0,0,0.2);
+  padding: 0;
+  border: none;
+  min-width: 0;
+  font-size: 28rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+}
 
 .lottery-list {
   display: flex;
@@ -38,4 +63,61 @@
 .empty-text {
   font-size: 28rpx;
   color: var(--text-secondary);
+}
+
+/* 广告浮层样式 */
+.mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 900;
+}
+.ad-modal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 86%;
+  max-height: 70%;
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 8rpx 16rpx rgba(0,0,0,0.2);
+  overflow: hidden;
+  z-index: 901;
+}
+.ad-content {
+  padding: 24rpx;
+  max-height: 70vh;
+}
+.ad-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+.ad-image {
+  width: 100%;
+  margin-bottom: 16rpx;
+  border-radius: 8rpx;
+}
+.ad-text {
+  font-size: 28rpx;
+  color: #333;
+  white-space: pre-wrap;
+}
+.mask-close {
+  position: fixed;
+  left: 50%;
+  bottom: 48rpx;
+  transform: translateX(-50%);
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #673ab7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 16rpx rgba(0,0,0,0.2);
+  z-index: 902;
+  font-size: 40rpx;
 }

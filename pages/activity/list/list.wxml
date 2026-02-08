@@ -1,0 +1,7 @@
+<view class="page-container">
+  <view class="top-row">
+    <filter-bar options="{{filterOptions}}" selectedKey="{{selectedKey}}" bind:change="onFilterChange" />
+  </view>
+  <info-list list="{{filteredList}}" bind:click="handleItemClick" emptyText="暂无活动"></info-list>
+  <view class="float-ball" bindtap="handlePublishClick">发布</view>
+</view>

@@ -10,10 +10,14 @@ Page({
       { key: 'all', text: '全部' },
       { key: 'active', text: '进行中' },
       { key: 'finished', text: '已结束' }
-    ]
+    ],
+    showAdModal: false,
+    adData: null,
+    lastAdData: null
   },
   onShow() {
     this.fetchHomeData();
+    this.fetchAd();
   },
   
   fetchHomeData() {
@@ -42,6 +46,17 @@ Page({
         wx.showToast({ title: '加载失败', icon: 'none' });
       });
   },
+  fetchAd() {
+    request('/api/activity/ad/latest')
+      .then(res => {
+        if (res) {
+          this.setData({ adData: res, lastAdData: res, showAdModal: true });
+        }
+      })
+      .catch(() => {
+        // 无活动时不提示
+      });
+  },
 
   goToDetail(e) {
     const id = e.detail.id || e.currentTarget.dataset.id;
@@ -68,5 +83,22 @@ Page({
       });
       this.setData({ filteredList: list });
     }
+  },
+  closeAd() {
+    this.setData({ showAdModal: false });
+  },
+  reopenAnnouncement() {
+    request('/api/activity/announcements?limit=1')
+      .then(list => {
+        const item = (list || [])[0];
+        if (item) {
+          this.setData({ adData: item, lastAdData: item, showAdModal: true });
+        } else {
+          wx.showToast({ title: '暂无公告', icon: 'none' });
+        }
+      })
+      .catch(() => {
+        wx.showToast({ title: '暂无公告', icon: 'none' });
+      });
   }
 })

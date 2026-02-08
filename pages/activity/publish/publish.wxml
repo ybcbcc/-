@@ -1,0 +1,45 @@
+<view class="page-container">
+  <view class="form-item">
+    <text class="label">活动名称</text>
+    <input class="input" placeholder="请输入活动名称" value="{{name}}" data-key="name" bindinput="handleInput"/>
+  </view>
+  <view class="form-item">
+    <text class="label">活动封面图</text>
+    <view class="image-uploader" bindtap="chooseImage">
+      <image wx:if="{{imageUrl}}" src="{{imageUrl}}" mode="aspectFill" class="uploaded-image" />
+      <view wx:else class="upload-placeholder">
+        <text class="plus-icon">+</text>
+        <text>上传封面</text>
+      </view>
+    </view>
+  </view>
+  <view class="form-item">
+    <text class="label">详细内容</text>
+    <textarea class="textarea" placeholder="请输入活动详细内容" value="{{content}}" data-key="content" bindinput="handleInput"/>
+  </view>
+  <view class="form-item">
+    <text class="label">开始日期</text>
+    <picker mode="date" value="{{startDate}}" bindchange="handlePickDate">
+      <view class="picker">{{startDate || '选择日期'}}</view>
+    </picker>
+  </view>
+  <view class="form-item">
+    <text class="label">开始时间</text>
+    <picker mode="time" value="{{startTime}}" bindchange="handlePickTime">
+      <view class="picker">{{startTime || '选择时间'}}</view>
+    </picker>
+  </view>
+  <view class="form-item">
+    <text class="label">持续时间(分钟)</text>
+    <input class="input" type="number" placeholder="请输入分钟数" value="{{durationMinutes}}" data-key="durationMinutes" bindinput="handleInput"/>
+  </view>
+  <view class="form-item">
+    <text class="label">出现次数（-1 每次弹出，0 不弹出）</text>
+    <picker mode="selector" range="{{appearanceOptions}}" range-key="label" value="{{appearanceIndex}}" bindchange="onAppearancePick">
+      <view class="picker">{{appearanceOptions[appearanceIndex].label}}</view>
+    </picker>
+  </view>
+  <view class="submit-row">
+    <button class="submit-btn" bindtap="submit">保存</button>
+  </view>
+</view>

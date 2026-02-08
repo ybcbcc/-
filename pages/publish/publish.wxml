@@ -36,12 +36,8 @@
         <input class="input" type="number" name="prizeValue" value="{{prizeValue}}" placeholder="0" bindinput="handleInput" data-field="prizeValue" />
       </view>
       <view class="form-item half">
-        <view class="label">奖品类型</view>
-        <picker bindchange="bindPrizeTypeChange" value="{{prizeTypeIndex}}" range="{{prizeTypes}}">
-          <view class="picker">
-            {{prizeTypes[prizeTypeIndex]}}
-          </view>
-        </picker>
+        <view class="label">奖品数量</view>
+        <input class="input" type="number" name="prizeQuantity" value="{{prizeQuantity}}" placeholder="例如: 10" bindinput="handleInput" data-field="prizeQuantity" />
       </view>
     </view>
 
@@ -58,23 +54,24 @@
       </view>
     </view>
     
-    <view class="form-item">
-        <view class="label">中奖概率 (0-1)</view>
-        <input class="input" type="digit" name="winProbability" value="{{winProbability}}" placeholder="例如: 0.1" bindinput="handleInput" data-field="winProbability" />
-    </view>
+    <!-- 中奖概率由系统核算，前端不再输入 -->
 
     <view class="form-item">
-      <view class="label">结束时间</view>
-      <picker mode="date" value="{{endDate}}" start="2023-01-01" bindchange="bindDateChange">
+      <view class="label">参与截止时间</view>
+      <picker mode="date" value="{{participationDate}}" start="2023-01-01" bindchange="bindParticipationDateChange">
         <view class="picker">
-          日期: {{endDate}}
+          日期: {{participationDate}}
         </view>
       </picker>
-      <picker mode="time" value="{{endTime}}" start="00:00" bindchange="bindTimeChange">
+      <picker mode="time" value="{{participationTime}}" start="00:00" bindchange="bindParticipationTimeChange">
         <view class="picker">
-          时间: {{endTime}}
+          时间: {{participationTime}}
         </view>
       </picker>
+    </view>
+    <view class="form-item">
+      <view class="label">抽奖持续时间（分钟）</view>
+      <input class="input" type="number" name="drawDuration" value="{{drawDuration}}" placeholder="例如: 60" bindinput="handleInput" data-field="drawDuration" />
     </view>
 
     <!-- 发布按钮 -->

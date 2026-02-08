@@ -13,7 +13,9 @@
     "pages/post-detail/post-detail",
     "pages/logs/logs",
     "pages/admin/audit-list/audit-list",
-    "pages/admin/audit-detail/audit-detail"
+    "pages/admin/audit-detail/audit-detail",
+    "pages/activity/list/list",
+    "pages/activity/publish/publish"
   ],
   "window": {
     "backgroundTextStyle": "light",
