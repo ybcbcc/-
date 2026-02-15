@@ -8,8 +8,8 @@
     <!-- 标题与状态 -->
     <view class="header-section">
       <view class="title">{{lotteryInfo.title}}</view>
-      <view class="status-tag {{lotteryInfo.status === 'active' ? 'active' : ''}}">
-        {{lotteryInfo.status === 'active' ? '进行中' : '已结束'}}
+      <view class="status-tag {{statusActive ? 'active' : ''}}">
+        {{statusText}}
       </view>
     </view>
 
@@ -40,6 +40,10 @@
         <text class="value">{{lotteryInfo.costPerEntry}} 积分</text>
       </view>
       <view class="info-row">
+        <text class="label">开始时间</text>
+        <text class="value">{{lotteryInfo.startTimeFormat}}</text>
+      </view>
+      <view class="info-row">
         <text class="label">结束时间</text>
         <text class="value">{{lotteryInfo.endTimeFormat}}</text>
       </view>
@@ -60,8 +64,8 @@
 
   <!-- 底部悬浮按钮 -->
   <view class="footer-bar">
-    <button class="draw-btn {{lotteryInfo.status !== 'active' ? 'disabled' : ''}}" bindtap="handleDraw" disabled="{{lotteryInfo.status !== 'active'}}">
-      {{lotteryInfo.status === 'active' ? '立即抽奖' : '活动已结束'}}
+    <button class="draw-btn {{statusText !== '立即报名' ? 'disabled' : ''}}" bindtap="handleDraw" disabled="{{statusText !== '立即报名'}}">
+      {{statusText}}
     </button>
   </view>
 </view>

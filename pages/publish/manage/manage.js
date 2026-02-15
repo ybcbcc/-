@@ -4,9 +4,18 @@ Page({
   data: {
     id: '',
     lottery: {},
-    updatedAt: ''
+    updatedAt: '',
+    canEdit: true
   },
 
+  parseBJMillis(str) {
+    if (!str) return 0;
+    if (typeof str === 'string' && str.includes('T') && (str.includes('Z') || /[+-]\d{2}:\d{2}/.test(str))) {
+      return new Date(str).getTime();
+    }
+    const iso = String(str).replace(' ', 'T');
+    return new Date(iso + '+08:00').getTime();
+  },
   onLoad(options) {
     if (options.id) {
       this.setData({ id: options.id });
@@ -23,9 +32,14 @@ Page({
   fetchDetail(id) {
     request(`/api/lottery/detail?id=${id}`)
       .then(res => {
+        const now = Date.now();
+        const startMs = this.parseBJMillis(res.startTime);
+        const adjStart = startMs ? startMs - 8 * 3600 * 1000 : 0;
+        const canEdit = !(res.auditStatus === 'approved' && adjStart && now > adjStart);
         this.setData({
           lottery: res,
-          updatedAt: res.updatedAt ? res.updatedAt.replace('T', ' ').substring(0, 19) : ''
+          updatedAt: res.updatedAt ? res.updatedAt.replace('T', ' ').substring(0, 19) : '',
+          canEdit
         });
       })
       .catch(err => {
@@ -35,6 +49,10 @@ Page({
   },
 
   handleEdit() {
+    if (!this.data.canEdit) {
+      wx.showToast({ title: '已开始且审核通过，无法修改', icon: 'none' });
+      return;
+    }
     wx.navigateTo({
       url: `/pages/publish/edit/edit?id=${this.data.id}`
     });

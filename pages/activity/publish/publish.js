@@ -36,8 +36,9 @@ Page({
       .then(res => {
         if (!res) return;
         const dt = new Date(res.startTime);
-        const dateStr = `${dt.getFullYear()}-${('0'+(dt.getMonth()+1)).slice(-2)}-${('0'+dt.getDate()).slice(-2)}`;
-        const timeStr = `${('0'+dt.getHours()).slice(-2)}:${('0'+dt.getMinutes()).slice(-2)}`;
+        const adj = new Date(dt.getTime() - 8 * 3600 * 1000);
+        const dateStr = `${adj.getFullYear()}-${('0'+(adj.getMonth()+1)).slice(-2)}-${('0'+adj.getDate()).slice(-2)}`;
+        const timeStr = `${('0'+adj.getHours()).slice(-2)}:${('0'+adj.getMinutes()).slice(-2)}`;
         const opts = this.data.appearanceOptions;
         const idx = Math.max(0, opts.findIndex(o => o.value === (res.appearanceCount ?? 0)));
         this.setData({

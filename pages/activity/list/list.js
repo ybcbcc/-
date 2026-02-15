@@ -17,16 +17,29 @@ Page({
     this.fetchData();
   },
 
+  parseBJMillis(str) {
+    if (!str) return 0;
+    if (typeof str === 'string' && str.includes('T') && (str.includes('Z') || /[+-]\d{2}:\d{2}/.test(str))) {
+      return new Date(str).getTime();
+    }
+    const iso = String(str).replace(' ', 'T');
+    return new Date(iso + '+08:00').getTime();
+  },
   fetchData() {
     request('/api/activity/list')
       .then(res => {
-        const list = (res || []).map(item => ({
-          id: item.id,
-          title: item.name,
-          time: item.startTime ? item.startTime.substring(0, 16) : '',
-          extra: `持续:${item.durationMinutes}分钟 弹出:${item.appearanceCount}`,
-          ...item
-        }));
+        const list = (res || []).map(item => {
+          const startMs = this.parseBJMillis(item.startTime);
+          const adjStart = startMs ? startMs - 8 * 3600 * 1000 : 0;
+          const startStr = adjStart ? new Date(adjStart).toISOString().replace('T', ' ').substring(0, 16) : '';
+          return {
+            id: item.id,
+            title: item.name,
+            time: startStr,
+            extra: `持续:${item.durationMinutes}分钟 弹出:${item.appearanceCount}`,
+            ...item
+          };
+        });
         this.setData({ activityList: list });
         this.applyFilter();
       })
@@ -51,11 +64,12 @@ Page({
     }
     const list = src.filter(i => {
       if (!i.startTime) return false;
-      const start = new Date(i.startTime).getTime();
-      const end = start + (i.durationMinutes || 0) * 60000;
-      if (key === 'active') return start <= now && end >= now;
-      if (key === 'upcoming') return start > now;
-      if (key === 'ended') return end < now;
+      const startMs = this.parseBJMillis(i.startTime);
+      const adjStart = startMs ? startMs - 8 * 3600 * 1000 : 0;
+      const endAdj = adjStart + (i.durationMinutes || 0) * 60000;
+      if (key === 'active') return adjStart <= now && endAdj >= now;
+      if (key === 'upcoming') return adjStart > now;
+      if (key === 'ended') return endAdj < now;
       return true;
     });
     this.setData({ filteredList: list });

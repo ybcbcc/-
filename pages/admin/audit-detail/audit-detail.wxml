@@ -23,7 +23,8 @@
     </view>
   </view>
   <view class="footer-bar">
-    <button class="btn approve" bindtap="handleApprove">审核通过</button>
-    <button class="btn reject" bindtap="handleReject">拒绝</button>
+    <button class="btn approve" bindtap="handleApprove" disabled="{{!canAudit}}">审核通过</button>
+    <button class="btn reject" bindtap="handleReject" disabled="{{!canAudit}}">拒绝</button>
+    <button class="btn danger" bindtap="handleForceRemove">强制下架</button>
   </view>
 </view>

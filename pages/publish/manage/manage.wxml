@@ -43,7 +43,7 @@
 
   <!-- 操作按钮 -->
   <view class="action-area">
-    <button class="btn edit-btn" bindtap="handleEdit">修改活动</button>
+    <button class="btn edit-btn" bindtap="handleEdit" disabled="{{!canEdit}}">修改活动</button>
     <button class="btn delete-btn" bindtap="handleDelete">删除活动</button>
   </view>
 </view>

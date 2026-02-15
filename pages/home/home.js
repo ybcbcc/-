@@ -15,6 +15,14 @@ Page({
     adData: null,
     lastAdData: null
   },
+  parseBJMillis(str) {
+    if (!str) return 0;
+    if (typeof str === 'string' && str.includes('T') && (str.includes('Z') || /[+-]\d{2}:\d{2}/.test(str))) {
+      return new Date(str).getTime();
+    }
+    const iso = String(str).replace(' ', 'T');
+    return new Date(iso + '+08:00').getTime();
+  },
   onShow() {
     this.fetchHomeData();
     this.fetchAd();
@@ -23,13 +31,28 @@ Page({
   fetchHomeData() {
     request('/api/home/list')
       .then(res => {
-        // 后端现在只返回 []Lottery
+        const nowMs = Date.now();
+        const bjNowStr = new Date(nowMs + 8 * 3600 * 1000).toISOString().replace('T', ' ').substring(0, 19);
+        console.log('[TimeDiag][home][BJ] now=', bjNowStr, 'count=', (res || []).length);
         const list = (res || []).map(item => {
+          const startMs = this.parseBJMillis(item.startTime);
+          const endMs = this.parseBJMillis(item.endTime);
+          const adjStart = startMs ? startMs - 8 * 3600 * 1000 : 0;
+          const adjEnd = endMs ? endMs - 8 * 3600 * 1000 : 0;
+          const startBJStr = new Date(startMs + 8 * 3600 * 1000).toISOString().replace('T', ' ').substring(0, 19);
+          const endBJStr = new Date(endMs + 8 * 3600 * 1000).toISOString().replace('T', ' ').substring(0, 19);
+          console.log('[TimeDiag][home][BJ] item=', item.id, 'startBJ=', startBJStr, 'endBJ=', endBJStr, 'adjStartMs=', adjStart, 'adjEndMs=', adjEnd);
+          let statusText = '进行中';
+          if (adjStart && nowMs < adjStart) {
+            statusText = '未开始';
+          } else if (adjEnd && nowMs > adjEnd) {
+            statusText = '已结束';
+          }
           return {
             id: item.id,
             title: item.title,
             desc: item.description,
-            status: item.status === 'active' ? '进行中' : '已结束',
+            status: statusText,
             prizeName: item.prizeName,
             cost: item.costPerEntry,
             imageUrl: item.imageUrl || '' 
@@ -78,7 +101,7 @@ Page({
     } else {
       const list = src.filter(i => {
         if (key === 'active') return i.status === '进行中';
-        if (key === 'finished') return i.status !== '进行中';
+        if (key === 'finished') return i.status === '已结束';
         return true;
       });
       this.setData({ filteredList: list });

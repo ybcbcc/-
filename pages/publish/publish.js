@@ -13,17 +13,18 @@ Page({
     costPerEntry: '',
     maxParticipants: '',
     drawDuration: '',
-    participationDate: '2025-12-31',
-    participationTime: '23:59'
+    startDate: '',
+    startTime: ''
   },
 
   onLoad(options) {
-    // Set default date to tomorrow
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    this.setData({
-      participationDate: tomorrow.toISOString().split('T')[0]
-    });
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = ('0' + (now.getMonth() + 1)).slice(-2);
+    const dd = ('0' + now.getDate()).slice(-2);
+    const dateStr = `${yyyy}-${mm}-${dd}`;
+    const timeStr = `${('0'+now.getHours()).slice(-2)}:${('0'+now.getMinutes()).slice(-2)}`;
+    this.setData({ startDate: dateStr, startTime: timeStr });
   },
 
   onShow() {
@@ -54,9 +55,9 @@ Page({
     // 离开页面时，如果内容不为空且未提交，自动保存为草稿
     if (this.hasContent() && !this.data.submitted) {
         // 保存草稿
-        const { title, imageUrl, description, prizeName, prizeValue, prizeQuantity, costPerEntry, maxParticipants, participationDate, participationTime, drawDuration } = this.data;
+        const { title, imageUrl, description, prizeName, prizeValue, prizeQuantity, costPerEntry, maxParticipants, drawDuration, startDate, startTime } = this.data;
         wx.setStorageSync('publish_draft', {
-            title, imageUrl, description, prizeName, prizeValue, prizeQuantity, costPerEntry, maxParticipants, participationDate, participationTime, drawDuration
+            title, imageUrl, description, prizeName, prizeValue, prizeQuantity, costPerEntry, maxParticipants, drawDuration, startDate, startTime
         });
     }
     
@@ -75,14 +76,6 @@ Page({
     request(`/api/lottery/detail?id=${id}`)
       .then(res => {
         wx.hideLoading();
-        // Parse participationDeadline
-        let participationDate = '2025-12-31';
-        let participationTime = '23:59';
-        if (res.participationDeadline) {
-            const dt = new Date(res.participationDeadline);
-            participationDate = dt.toISOString().split('T')[0];
-            participationTime = dt.toTimeString().substring(0, 5);
-        }
         
         this.setData({
             title: res.title,
@@ -93,10 +86,18 @@ Page({
             prizeQuantity: res.prizeQuantity,
             costPerEntry: res.costPerEntry,
             maxParticipants: res.maxParticipants,
-            participationDate,
-            participationTime,
             drawDuration: res.drawDuration || ''
         });
+        if (res.startTime) {
+          const dt = new Date(res.startTime);
+          const adj = new Date(dt.getTime() - 8 * 3600 * 1000);
+          const yyyy = adj.getFullYear();
+          const mm = ('0' + (adj.getMonth() + 1)).slice(-2);
+          const dd = ('0' + adj.getDate()).slice(-2);
+          const ds = `${yyyy}-${mm}-${dd}`;
+          const ts = `${('0'+adj.getHours()).slice(-2)}:${('0'+adj.getMinutes()).slice(-2)}`;
+          this.setData({ startDate: ds, startTime: ts });
+        }
       })
       .catch(err => {
         wx.hideLoading();
@@ -111,17 +112,14 @@ Page({
     });
   },
 
-  bindParticipationDateChange(e) {
-    this.setData({
-      participationDate: e.detail.value
-    });
+  onStartDateChange(e) {
+    this.setData({ startDate: e.detail.value });
   },
-
-  bindParticipationTimeChange(e) {
-    this.setData({
-      participationTime: e.detail.value
-    });
+  onStartTimeChange(e) {
+    this.setData({ startTime: e.detail.value });
   },
+ 
+  
 
   chooseImage() {
     wx.chooseImage({
@@ -152,7 +150,7 @@ Page({
   },
 
   doSubmitPublish() {
-    const { title, imageUrl, description, prizeName, prizeValue, prizeQuantity, costPerEntry, maxParticipants, participationDate, participationTime, drawDuration } = this.data;
+    const { title, imageUrl, description, prizeName, prizeValue, prizeQuantity, costPerEntry, maxParticipants, drawDuration, startDate, startTime } = this.data;
 
     if (!title || !prizeName || !costPerEntry) {
       wx.showToast({ title: '请填写必要信息', icon: 'none' });
@@ -170,9 +168,11 @@ Page({
       prizeQuantity: parseInt(prizeQuantity) || 1,
       costPerEntry: parseInt(costPerEntry) || 0,
       maxParticipants: parseInt(maxParticipants) || 100,
-      participationDeadline: `${participationDate} ${participationTime}:00`,
       drawDuration: parseInt(drawDuration) || 0
     };
+    if (startDate && startTime) {
+      postData.startTime = `${startDate} ${startTime}:00`;
+    }
 
     request('/api/post/create', 'POST', postData)
       .then(res => {
@@ -211,10 +211,15 @@ Page({
           prizeQuantity: '',
           costPerEntry: '',
           maxParticipants: '',
-          participationDate: tomorrow.toISOString().split('T')[0],
-          participationTime: '23:59',
           drawDuration: '',
           submitted: false
       });
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = ('0' + (now.getMonth() + 1)).slice(-2);
+      const dd = ('0' + now.getDate()).slice(-2);
+      const dateStr = `${yyyy}-${mm}-${dd}`;
+      const timeStr = `${('0'+now.getHours()).slice(-2)}:${('0'+now.getMinutes()).slice(-2)}`;
+      this.setData({ startDate: dateStr, startTime: timeStr });
   }
 })
