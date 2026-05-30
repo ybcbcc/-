@@ -5,6 +5,29 @@
   padding-bottom: 120rpx;
 }
 
+.share-entry {
+  position: fixed;
+  right: 24rpx;
+  z-index: 20;
+}
+
+.share-btn {
+  min-width: 132rpx;
+  height: 64rpx;
+  line-height: 64rpx;
+  padding: 0 24rpx;
+  border-radius: 999rpx;
+  background: rgba(103, 58, 183, 0.92);
+  color: #fff;
+  font-size: 26rpx;
+  box-shadow: 0 6rpx 20rpx rgba(103, 58, 183, 0.18);
+}
+
+.share-btn[disabled] {
+  background: rgba(180, 180, 180, 0.92);
+  color: #fff;
+}
+
 .banner-image {
   width: 100%;
   height: 400rpx;

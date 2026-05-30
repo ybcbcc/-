@@ -16,8 +16,8 @@
 前端使用云托管容器服务，配置在以下文件中：
 
 **前端配置：**
-- `app.js` 中的云开发环境ID：`prod-4gvarcgoa255cecb`
-- `utils/request.js` 中的服务名称：`golang-cttc`
+- `app.js` 中通过 `utils/request.js` 复用云开发环境ID：`prod-d9ga3msima96c852c`
+- `utils/request.js` 中的服务名称：`golang-6fwu`
 
 **后端配置：**
 - `container.config.json` 中配置了容器端口和环境参数
@@ -30,7 +30,7 @@
 
 ### 步骤1：检查云托管服务状态
 1. 登录[微信云托管控制台](https://console.cloud.tencent.com/tcb/cloudrun)
-2. 确认服务`golang-cttc`正在运行
+2. 确认服务`golang-6fwu`正在运行
 3. 检查服务日志查看具体错误信息
 
 ### 步骤2：配置数据库连接

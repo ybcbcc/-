@@ -32,20 +32,13 @@ Page({
     request('/api/home/list')
       .then(res => {
         const nowMs = Date.now();
-        const bjNowStr = new Date(nowMs + 8 * 3600 * 1000).toISOString().replace('T', ' ').substring(0, 19);
-        console.log('[TimeDiag][home][BJ] now=', bjNowStr, 'count=', (res || []).length);
         const list = (res || []).map(item => {
           const startMs = this.parseBJMillis(item.startTime);
           const endMs = this.parseBJMillis(item.endTime);
-          const adjStart = startMs ? startMs - 8 * 3600 * 1000 : 0;
-          const adjEnd = endMs ? endMs - 8 * 3600 * 1000 : 0;
-          const startBJStr = new Date(startMs + 8 * 3600 * 1000).toISOString().replace('T', ' ').substring(0, 19);
-          const endBJStr = new Date(endMs + 8 * 3600 * 1000).toISOString().replace('T', ' ').substring(0, 19);
-          console.log('[TimeDiag][home][BJ] item=', item.id, 'startBJ=', startBJStr, 'endBJ=', endBJStr, 'adjStartMs=', adjStart, 'adjEndMs=', adjEnd);
           let statusText = '进行中';
-          if (adjStart && nowMs < adjStart) {
+          if (startMs && nowMs < startMs) {
             statusText = '未开始';
-          } else if (adjEnd && nowMs > adjEnd) {
+          } else if (endMs && nowMs > endMs) {
             statusText = '已结束';
           }
           return {

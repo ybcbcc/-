@@ -90,12 +90,11 @@ Page({
         });
         if (res.startTime) {
           const dt = new Date(res.startTime);
-          const adj = new Date(dt.getTime() - 8 * 3600 * 1000);
-          const yyyy = adj.getFullYear();
-          const mm = ('0' + (adj.getMonth() + 1)).slice(-2);
-          const dd = ('0' + adj.getDate()).slice(-2);
+          const yyyy = dt.getFullYear();
+          const mm = ('0' + (dt.getMonth() + 1)).slice(-2);
+          const dd = ('0' + dt.getDate()).slice(-2);
           const ds = `${yyyy}-${mm}-${dd}`;
-          const ts = `${('0'+adj.getHours()).slice(-2)}:${('0'+adj.getMinutes()).slice(-2)}`;
+          const ts = `${('0'+dt.getHours()).slice(-2)}:${('0'+dt.getMinutes()).slice(-2)}`;
           this.setData({ startDate: ds, startTime: ts });
         }
       })

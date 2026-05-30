@@ -34,8 +34,7 @@ Page({
       .then(res => {
         const now = Date.now();
         const startMs = this.parseBJMillis(res.startTime);
-        const adjStart = startMs ? startMs - 8 * 3600 * 1000 : 0;
-        const canEdit = !(res.auditStatus === 'approved' && adjStart && now > adjStart);
+        const canEdit = !(res.auditStatus === 'approved' && startMs && now > startMs);
         this.setData({
           lottery: res,
           updatedAt: res.updatedAt ? res.updatedAt.replace('T', ' ').substring(0, 19) : '',

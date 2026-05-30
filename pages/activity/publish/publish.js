@@ -1,5 +1,24 @@
 const { request, uploadFile } = require('../../../utils/request.js');
 
+// 中文注释：兼容旧值与新值，统一将活动时间按北京时间拆分给页面控件
+function parseStartFields(value) {
+  if (!value) {
+    return { dateStr: '', timeStr: '' };
+  }
+  let dt = null;
+  if (typeof value === 'string' && value.includes('T') && (value.includes('Z') || /[+-]\d{2}:\d{2}/.test(value))) {
+    dt = new Date(value);
+  } else {
+    dt = new Date(String(value).replace(' ', 'T') + '+08:00');
+  }
+  if (Number.isNaN(dt.getTime())) {
+    return { dateStr: '', timeStr: '' };
+  }
+  const dateStr = `${dt.getFullYear()}-${(`0${dt.getMonth() + 1}`).slice(-2)}-${(`0${dt.getDate()}`).slice(-2)}`;
+  const timeStr = `${(`0${dt.getHours()}`).slice(-2)}:${(`0${dt.getMinutes()}`).slice(-2)}`;
+  return { dateStr, timeStr };
+}
+
 Page({
   data: {
     id: '',
@@ -35,10 +54,7 @@ Page({
     request(`/api/activity/detail?id=${id}`)
       .then(res => {
         if (!res) return;
-        const dt = new Date(res.startTime);
-        const adj = new Date(dt.getTime() - 8 * 3600 * 1000);
-        const dateStr = `${adj.getFullYear()}-${('0'+(adj.getMonth()+1)).slice(-2)}-${('0'+adj.getDate()).slice(-2)}`;
-        const timeStr = `${('0'+adj.getHours()).slice(-2)}:${('0'+adj.getMinutes()).slice(-2)}`;
+        const { dateStr, timeStr } = parseStartFields(res.startTime);
         const opts = this.data.appearanceOptions;
         const idx = Math.max(0, opts.findIndex(o => o.value === (res.appearanceCount ?? 0)));
         this.setData({
@@ -95,12 +111,13 @@ Page({
       wx.showToast({ title: '请填写活动名称', icon: 'none' });
       return;
     }
-    const startISO = startDate && startTime ? new Date(`${startDate} ${startTime}:00`).toISOString() : new Date().toISOString();
+    // 中文注释：活动时间统一按北京时间字符串提交，避免前端转换为 UTC 导致偏移
+    const startTimeText = startDate && startTime ? `${startDate} ${startTime}:00` : '';
     const payload = {
       name,
       imageUrl,
       content,
-      startTime: startISO,
+      startTime: startTimeText,
       durationMinutes: Number(durationMinutes) || 0,
       appearanceCount: Number(appearanceCount) || 0
     };

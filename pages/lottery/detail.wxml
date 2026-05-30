@@ -1,4 +1,11 @@
 <view class="page-container">
+  <!-- 右上角分享按钮 -->
+  <view class="share-entry" style="top: {{shareButtonTop}}px;">
+    <button class="share-btn" open-type="share" disabled="{{!lotteryId || sharePreparing || !shareReady || !shareCode}}">
+      分享
+    </button>
+  </view>
+
   <!-- 顶部图片 -->
   <image wx:if="{{lotteryInfo.imageUrl}}" src="{{lotteryInfo.imageUrl}}" mode="aspectFill" class="banner-image" />
   <view wx:else class="banner-placeholder"></view>

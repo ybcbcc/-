@@ -1,5 +1,5 @@
 // app.js
-const { request } = require('./utils/request.js');
+const { request, CLOUD_ENV } = require('./utils/request.js');
 
 App({
   onLaunch() {
@@ -11,7 +11,7 @@ App({
       console.error('请使用 2.2.3 或以上的基础库以使用云能力');
     } else {
       wx.cloud.init({
-        env: 'prod-4gvarcgoa255cecb', // 您的云开发环境 ID
+        env: CLOUD_ENV, // 绑定当前微信云托管所属的云环境
         traceUser: true,
       });
     }
@@ -23,14 +23,19 @@ App({
   },
 
   // 将登录逻辑暴露给页面按需调用
-  login() {
+  login(forceRefresh = false) {
     return new Promise((resolve, reject) => {
       // 检查是否有 Token
       const token = wx.getStorageSync('token');
-      if (token) {
+      if (token && !forceRefresh) {
         this.globalData.isLoggedIn = true;
         resolve(token);
         return;
+      }
+
+      if (forceRefresh) {
+        wx.removeStorageSync('token');
+        this.globalData.isLoggedIn = false;
       }
 
       wx.login({

@@ -25,8 +25,7 @@ Page({
       .then(res => {
         const now = Date.now();
         const startMs = this.parseBJMillis(res.startTime);
-        const adjStart = startMs ? startMs - 8 * 3600 * 1000 : 0;
-        const canAudit = !(adjStart && now > adjStart);
+        const canAudit = !(startMs && now > startMs);
         this.setData({ item: res, canAudit });
       })
       .catch(err => {

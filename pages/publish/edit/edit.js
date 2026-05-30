@@ -38,12 +38,11 @@ Page({
         let endTime = '23:59';
         if (res.endTime) {
             const dt = new Date(res.endTime);
-            const adj = new Date(dt.getTime() - 8 * 3600 * 1000);
-            const yyyy = adj.getFullYear();
-            const mm = ('0' + (adj.getMonth() + 1)).slice(-2);
-            const dd = ('0' + adj.getDate()).slice(-2);
+            const yyyy = dt.getFullYear();
+            const mm = ('0' + (dt.getMonth() + 1)).slice(-2);
+            const dd = ('0' + dt.getDate()).slice(-2);
             endDate = `${yyyy}-${mm}-${dd}`;
-            endTime = `${('0'+adj.getHours()).slice(-2)}:${('0'+adj.getMinutes()).slice(-2)}`;
+            endTime = `${('0'+dt.getHours()).slice(-2)}:${('0'+dt.getMinutes()).slice(-2)}`;
         }
         
         // Find prize type index

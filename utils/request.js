@@ -1,5 +1,6 @@
-// 您的云托管环境ID (请替换为真实ID)
-const CLOUD_ENV = 'prod-4gvarcgoa255cecb'; 
+// 微信云托管环境配置，统一维护，避免多处手动修改不一致
+const CLOUD_ENV = 'prod-d9ga3msima96c852c';
+const CLOUD_SERVICE = 'golang-6fwu';
 
 const request = (url, method = 'GET', data = {}) => {
   return new Promise((resolve, reject) => {
@@ -13,7 +14,7 @@ const request = (url, method = 'GET', data = {}) => {
       path: url,
       method: method,
       header: {
-        'X-WX-SERVICE': 'golang-cttc', // 指定服务名称
+        'X-WX-SERVICE': CLOUD_SERVICE, // 指定云托管服务名称
         'X-Token': token,
         'content-type': 'application/json'
       },
@@ -78,5 +79,6 @@ const uploadFile = (filePath) => {
 module.exports = {
   request,
   uploadFile,
-  CLOUD_ENV
+  CLOUD_ENV,
+  CLOUD_SERVICE
 };

@@ -30,8 +30,7 @@ Page({
       .then(res => {
         const list = (res || []).map(item => {
           const startMs = this.parseBJMillis(item.startTime);
-          const adjStart = startMs ? startMs - 8 * 3600 * 1000 : 0;
-          const startStr = adjStart ? new Date(adjStart).toISOString().replace('T', ' ').substring(0, 16) : '';
+          const startStr = startMs ? this.formatDisplayTime(startMs) : '';
           return {
             id: item.id,
             title: item.name,
@@ -46,6 +45,17 @@ Page({
       .catch(() => {
         wx.showToast({ title: '加载失败', icon: 'none' });
       });
+  },
+
+  // 中文注释：使用本地时间字段拼接，避免 toISOString 再次转成 UTC 展示
+  formatDisplayTime(ms) {
+    const dt = new Date(ms);
+    const year = dt.getFullYear();
+    const month = `0${dt.getMonth() + 1}`.slice(-2);
+    const day = `0${dt.getDate()}`.slice(-2);
+    const hour = `0${dt.getHours()}`.slice(-2);
+    const minute = `0${dt.getMinutes()}`.slice(-2);
+    return `${year}-${month}-${day} ${hour}:${minute}`;
   },
 
   onFilterChange(e) {
@@ -65,11 +75,10 @@ Page({
     const list = src.filter(i => {
       if (!i.startTime) return false;
       const startMs = this.parseBJMillis(i.startTime);
-      const adjStart = startMs ? startMs - 8 * 3600 * 1000 : 0;
-      const endAdj = adjStart + (i.durationMinutes || 0) * 60000;
-      if (key === 'active') return adjStart <= now && endAdj >= now;
-      if (key === 'upcoming') return adjStart > now;
-      if (key === 'ended') return endAdj < now;
+      const endMs = startMs + (i.durationMinutes || 0) * 60000;
+      if (key === 'active') return startMs <= now && endMs >= now;
+      if (key === 'upcoming') return startMs > now;
+      if (key === 'ended') return endMs < now;
       return true;
     });
     this.setData({ filteredList: list });
